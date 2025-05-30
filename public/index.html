@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Adventure</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <h1 id="game-title" class="hidden"></h1>
+        <h2 id="game-subtitle" class="hidden"></h2>
+        <img id="character-portrait" src="" alt="Character Portrait" class="hidden">
+        <img id="encounter-image" src="" alt="Encounter Image" class="hidden"> 
+        <div id="game-content" class="hidden"></div>
+        <div id="choices-container" class="hidden"></div>
+        <div id="status-display" class="hidden"></div>
+        <button id="next-button" class="game-button hidden"></button>
+    </div>
+
+    <audio id="bg-music" loop>
+        <source src="assets/audio/background_music.mp3" type="audio/mpeg">
+        <source src="assets/audio/background_music.wav" type="audio/wav">
+        Your browser does not support the audio element.
+    </audio>
+    <audio id="sfx-button-click">
+        <source src="assets/audio/button_click.wav" type="audio/wav">
+        <source src="assets/audio/button_click.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <audio id="sfx-typing">
+        <source src="assets/audio/typing_sound.wav" type="audio/wav">
+        <source src="assets/audio/typing_sound.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script src="game.js"></script>
+</body>
+</html>

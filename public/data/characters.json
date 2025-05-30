@@ -1,0 +1,42 @@
+[
+  {
+    "id": "eva",
+    "name": "Captain Eva Rostova",
+    "portrait": "eva_portrait.png",
+    "traits": [
+      "Leadership: Inspires confidence in dire situations.",
+      "Tactician: Quick to assess and exploit weaknesses.",
+      "Stubborn: Rarely backs down from a challenge."
+    ]
+  },
+  {
+    "id": "jax",
+    "name": "Mechanic Jax 'Sparks' Bolt",
+    "portrait": "jax_portrait.png",
+    "traits": [
+      "Engineering: Can fix anything with a wrench and a prayer.",
+      "Resourceful: Finds solutions where others see dead ends.",
+      "Grumpy: Prefers machines to people."
+    ]
+  },
+  {
+    "id": "aris",
+    "name": "Dr. Aris Thorne",
+    "portrait": "aris_portrait.png",
+    "traits": [
+      "Intellectual: Vast knowledge of xeno-biology and tech.",
+      "Observant: Notices details others miss.",
+      "Naive: Sometimes underestimates practical dangers."
+    ]
+  },
+  {
+    "id": "zephyr",
+    "name": "Navigator Zephyr 'Whisper' Swift",
+    "portrait": "zephyr_portrait.png",
+    "traits": [
+      "Pilot: Unparalleled skill in navigating dangerous fields.",
+      "Intuitive: Trusts gut feelings as much as instruments.",
+      "Quiet: Prefers to listen and observe rather than speak."
+    ]
+  }
+]

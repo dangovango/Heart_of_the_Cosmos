@@ -1,0 +1,13 @@
+# .clinerules
+tech:
+  - React # or Phaser
+  - JavaScript
+  - HTML5
+  - CSS3
+style:
+  - All code and content should be generated in English, using concise and engaging language.
+  - Narrative should be consistent with the attached style guide.
+js_environment:
+  - Browser-native JavaScript (no module bundler like Webpack or Vite)
+  - Avoid 'import' or 'export' statements in client-side scripts unless specifically requested for a module build.
+  - Assume global variables for libraries loaded via script tags (e.g., 'Phaser' will be globally available).
