@@ -6,7 +6,7 @@
 body {
     /* Background Image Settings */
     background-color: #000000; /* Fallback in case image fails to load */
-    background-image: url('assets/space_background.png'); /* <-- VERY IMPORTANT: Check this path! */
+    background-image: url('/assets/space_background.png'); /* <-- VERY IMPORTANT: Check this path! */
     background-size: cover;      /* Ensures the image covers the entire viewport */
     background-position: center; /* Centers the image */
     background-repeat: no-repeat;/* Prevents the image from tiling */
