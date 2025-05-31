@@ -7,7 +7,7 @@ let gameData = {}; // Initialize as an empty object
 const staticGameNarrative = {
     splashScreen: {
         title: "Heart of the Cosmos",
-        subtitle: "Treasure hidden in the void"
+        subtitle: "Search for the Star-Heart Gem",
     },
     introGame: {
         text: "Welcome, brave spacefarers! You are part of a four-person crew, renowned for your daring exploits, now seeking untold treasures across the cosmos. Prepare for adventure, danger, and glory!"
