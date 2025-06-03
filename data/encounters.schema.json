@@ -1,0 +1,101 @@
+{
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "title": {
+                "type": "string",
+                "description": "Title of the act"
+            },
+            "encounters": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "Unique identifier for the encounter"
+                        },
+                        "image": {
+                            "type": "string",
+                            "description": "Path to the encounter image"
+                        },
+                        "scenario": {
+                            "type": "string",
+                            "description": "Description of the encounter scenario"
+                        },
+                        "options": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "text": {
+                                        "type": "string",
+                                        "description": "Text of the option"
+                                    },
+                                    "outcome": {
+                                        "type": "object",
+                                        "properties": {
+                                            "text": {
+                                                "type": "string",
+                                                "description": "Text describing the outcome"
+                                            },
+                                            "shipHealthChange": {
+                                                "type": "integer",
+                                                "description": "Change in ship health"
+                                            },
+                                            "treasureChange": {
+                                                "type": "integer",
+                                                "description": "Change in treasure"
+                                            },
+                                            "crewHealthChange": {
+                                                "type": "integer",
+                                                "description": "Change in crew health"
+                                            },
+                                            "specialEffect": {
+                                                "type": "string",
+                                                "description": "Special effect triggered by the outcome",
+                                                "enum": [
+                                                    "shipShieldBoost",
+                                                    "nebulaShortcutUnlocked",
+                                                    "jaxEfficiencyBoost",
+                                                    "reputationGain"
+                                                ],
+                                                "default": null
+                                            }
+                                        },
+                                        "required": [
+                                            "text",
+                                            "shipHealthChange",
+                                            "treasureChange",
+                                            "crewHealthChange"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "text",
+                                    "outcome"
+                                ]
+                            }
+                        }
+                    },
+                    "required": [
+                        "id",
+                        "image",
+                        "scenario",
+                        "options"
+                    ]
+                }
+            },
+            "summary": {
+                "type": "string",
+                "description": "Summary of the act"
+            }
+        },
+        "required": [
+            "title",
+            "encounters",
+            "summary"
+        ]
+    }
+}

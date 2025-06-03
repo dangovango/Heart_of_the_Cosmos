@@ -1,6 +1,5 @@
 # .clinerules
 tech:
-  - React # or Phaser
   - JavaScript
   - HTML5
   - CSS3

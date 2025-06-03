@@ -11,7 +11,7 @@
   },
   {
     "id": "jax",
-    "name": "Mechanic Jax 'Sparks' Bolt",
+    "name": "Mechanic Jax 'Sparky' Bolter",
     "portrait": "jax_portrait.png",
     "traits": [
       "Engineering: Can fix anything with a wrench and a prayer.",
@@ -24,17 +24,17 @@
     "name": "Dr. Aris Thorne",
     "portrait": "aris_portrait.png",
     "traits": [
-      "Intellectual: Vast knowledge of xeno-biology and tech.",
+      "Intellect: Vast knowledge of xeno-biology and tech.",
       "Observant: Notices details others miss.",
       "Naive: Sometimes underestimates practical dangers."
     ]
   },
   {
     "id": "zephyr",
-    "name": "Navigator Zephyr 'Whisper' Swift",
+    "name": "Pilot Zephyr Swift",
     "portrait": "zephyr_portrait.png",
     "traits": [
-      "Pilot: Unparalleled skill in navigating dangerous fields.",
+      "Piloting: Unparalleled skill in navigating dangerous fields.",
       "Intuitive: Trusts gut feelings as much as instruments.",
       "Quiet: Prefers to listen and observe rather than speak."
     ]

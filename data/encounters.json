@@ -1,80 +1,358 @@
 [
     {
         "title": "Act 1: The Nebula's Embrace",
+        "actDescription": "The journey begins! Your crew plunges into the mysterious Nebula's Embrace, where strange energy and desperate calls await. Press continue to face your first encounter...",
         "encounters": [
             {
                 "id": "act1_enc1",
+                "displayName": "Crystalline Organism",
                 "image": "encounters/act1_enc1.png",
                 "scenario": "Deep within the nebula, your ship's energy readings flicker erratically. A massive, crystalline organism, dormant for millennia, has subtly integrated itself with the nebula's energy currents, causing interference. It appears harmless, but its presence is disrupting your navigation systems.",
                 "options": [
                     {
-                            "text": "Attempt to safely reroute power around the interference, trusting Zephyr's nuanced understanding of energy flow.",
-                            "outcome": {
+                        "text": "Attempt to safely reroute power around the interference, trusting Zephyr's nuanced understanding of energy flow.",
+                        "outcome": {
+                            "image": "outcome/act1_enc1_outcome1.png",
                             "text": "Zephyr meticulously reconfigures the energy conduits, isolating your systems from the organism's influence. The disruption ceases, and your navigation is restored. You also discover a unique resonant frequency within the creature that subtly boosts your shield's output for a short duration.",
                             "shipHealthChange": 0,
                             "treasureChange": 0,
                             "crewHealthChange": 0,
-                            "specialEffect": "shipShieldBoost"
+                            "specialEffect": "shipShieldBoost",
+                            "nextId": "act1_enc2"
                         }
                     },
                     {
                         "text": "Have Jax rig a powerful, localized energy burst to disrupt the organism's interference directly.",
                         "outcome": {
-                            "text": "Jax deploys a makeshift energy pulse, which indeed shatters the creature's crystalline structure, clearing the interference. However, the raw energy feedback overloads a minor subsystem, requiring immediate repairs and causing minor damage.",
+                            "image": "outcome/act1_enc1_outcome2.png",
+                            "text": "Jax deploys a makeshift energy pulse, which indeed shatters the creature's crystalline structure, clearing the interference. However, the raw energy feedback overloads a minor subsystem of your ship, requiring immediate repairs and causing minor damage.",
                             "shipHealthChange": -5,
                             "treasureChange": 0,
-                            "crewHealthChange": 0
+                            "crewHealthChange": 0,
+                            "nextId": "act1_enc_ancient_derelict"
+                        }
+                    },
+                    {
+                        "text": "Investigate the source of the unique energy signature the organism emits. (Riskier, but potential unique reward)",
+                        "outcome": {
+                            "image": "outcome/act1_enc1_outcome3.png",
+                            "text": "Driven by curiosity, Dr. Aris directs scans deeper into the crystalline mass. You uncover a hidden pocket of highly unstable exotic matter. While you collect a small sample (50 credits), the proximity causes your ship to take minor damage from the unstable energy.",
+                            "shipHealthChange": -10,
+                            "treasureChange": 50,
+                            "crewHealthChange": 0,
+                            "nextId": "act1_enc_mysterious_anomaly"
                         }
                     }
                 ]
             },
             {
                 "id": "act1_enc2",
+                "displayName": "Stranded Shuttle",
                 "image": "encounters/act1_enc2.png",
-                "scenario": "A small, dilapidated shuttle hails you, its pilot pleading for urgent medical supplies. They claim their crew is suffering from a virulent space plague, and they're stranded. Your medical bay has limited supplies, but helping them could deplete your own reserves.",
+                "scenario": "A small, dilapidated shuttle hails you, its pilot pleading for urgent medical supplies. They claim their crew is suffering from a violent space plague, and they're stranded. Your medical bay has limited supplies, but helping them could deplete your own reserves.",
                 "options": [
                     {
                         "text": "Dock with the shuttle and have Dr. Aris assess the situation and offer medical aid.",
                         "outcome": {
-                            "text": "Dr. Aris cautiously boards the shuttle, quickly diagnosing a non-contagious but debilitating foodborne illness, not a plague. Your timely intervention saves their crew. In gratitude, they share detailed charts of safe shortcuts through the nebula and a small cache of rare alien herbs.",
+                            "image": "outcome/act1_enc2_outcome1.png",
+                            "text": "Dr. Aris cautiously boards the shuttle, quickly diagnosing a non-contagious but debilitating foodborne illness, not a plague. Your timely intervention saves their crew. In gratitude, they share detailed charts of safe shortcuts through the nebula and a small cache of rare alien herbs worth 75 credits.",
                             "shipHealthChange": 0,
                             "treasureChange": 75,
                             "crewHealthChange": 0,
-                            "specialEffect": "nebulaShortcutUnlocked"
+                            "specialEffect": "nebulaShortcutUnlocked",
+                            "nextId": "act1_enc_abandoned_mining_station"
                         }
                     },
                     {
                         "text": "Maintain distance and politely decline, citing the risk of contagion and limited resources.",
                         "outcome": {
+                            "image": "outcome/act1_enc2_outcome2.png",
                             "text": "You prioritize your crew's safety and mission, leaving the stranded shuttle behind. While you avoid any potential risks, a pang of guilt lingers, and you wonder if you missed an opportunity to aid fellow travelers.",
                             "shipHealthChange": 0,
                             "treasureChange": 0,
-                            "crewHealthChange": 0
+                            "crewHealthChange": 0,
+                            "nextId": "act1_enc_mysterious_anomaly"
+                        }
+                    },
+                    {
+                        "text": "Demand payment for your assistance, citing the risk.",
+                        "outcome": {
+                            "image": "outcome/act1_enc2_outcome3.png",
+                            "text": "You offer aid, but only for a steep price. The desperate pilot reluctantly agrees to give you 100 credits for your help, but their gratitude is clearly overshadowed by resentment.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 100,
+                            "crewHealthChange": -5,
+                            "specialEffect": "reputationLossMinor",
+                            "nextId": "act1_enc_abandoned_mining_station"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "act1_enc_ancient_derelict",
+                "displayName": "Ancient Derelict Ship",
+                "image": "encounters/act1_enc_ancient_derelict.png",
+                "scenario": "Following Jax's energy disruption, your scans reveal a previously cloaked ancient derelict vessel, seemingly powered by similar crystalline organisms. It's a risk to board, but untold secrets (and perhaps treasure) could lie within.",
+                "options": [
+                    {
+                        "text": "Send a team to cautiously explore the derelict.",
+                        "outcome": {
+                            "image": "outcome/act1_enc_ancient_derelict_outcome1.png",
+                            "text": "Your team navigates the eerie silence of the derelict. They find a vast library of corrupted data files and a small stash of valuable alien tech worth 150 credits. However, a sudden power surge from the derelict drains some of your ship's auxiliary power.",
+                            "shipHealthChange": -5,
+                            "treasureChange": 150,
+                            "crewHealthChange": 0,
+                            "nextId": "act1_enc_smugglers_den"
+                        }
+                    },
+                    {
+                        "text": "Scrap what you can from the exterior and move on.",
+                        "outcome": {
+                            "image": "outcome/act1_enc_ancient_derelict_outcome2.png",
+                            "text": "You decide against boarding, opting for safety. Your crew manages to salvage some external plating and a few power conduits, netting you 50 credits. You avoid any unknown dangers within the derelict.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 50,
+                            "crewHealthChange": 0,
+                            "nextId": "act1_enc_energy_flare"
+                        }
+                    },
+                    {
+                        "text": "Attempt to reactivate parts of its ancient systems, hoping for a power boost.",
+                        "outcome": {
+                            "image": "outcome/act1_enc_ancient_derelict_outcome3.png",
+                            "text": "Jax attempts to bring online some of the derelict's ancient systems. He manages to activate a powerful, but unstable, shield generator. It provides a temporary boost but also drains your ship's main power core significantly.",
+                            "shipHealthChange": -15,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "specialEffect": "temporaryShieldBoost",
+                            "nextId": "act1_enc_energy_flare"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "act1_enc_mysterious_anomaly",
+                "displayName": "Mysterious Anomaly",
+                "image": "encounters/act1_enc_mysterious_anomaly.png",
+                "scenario": "You encounter a shimmering, unstable anomaly in space. Your sensors can't get a clear reading, but it seems to be drawing energy from the nebula around it. It pulsates with an ethereal light.",
+                "options": [
+                    {
+                        "text": "Approach cautiously and attempt to analyze the anomaly with advanced scans.",
+                        "outcome": {
+                            "image": "outcome/act1_enc_mysterious_anomaly_outcome1.png",
+                            "text": "Dr. Aris carefully scans the anomaly. It's a rare gravitational singularity, harmless if approached correctly. You gather valuable data on its properties, which could sell for 100 credits, and experience a momentary calming effect on your crew.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 100,
+                            "crewHealthChange": 5,
+                            "nextId": "act1_enc_abandoned_mining_station"
+                        }
+                    },
+                    {
+                        "text": "Fire a low-power energy pulse to disrupt it and ensure safe passage.",
+                        "outcome": {
+                            "image": "outcome/act1_enc_mysterious_anomaly_outcome2.png",
+                            "text": "Your pulse causes the anomaly to flare violently before dissipating. The resulting energy shockwave buffets your ship, causing minor system failures. Safety was prioritized, but not without cost.",
+                            "shipHealthChange": -5,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "nextId": "act1_enc_abandoned_mining_station"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "act1_enc_abandoned_mining_station",
+                "displayName": "Abandoned Mining Station",
+                "image": "encounters/act1_enc_abandoned_mining_station.png",
+                "scenario": "You drift past an old, abandoned mining station. Its lights flicker intermittently, and automated drones still patrol its decaying exterior. There's a chance of valuable ore left behind, but also unknown dangers.",
+                "options": [
+                    {
+                        "text": "Send a team to salvage what materials they can from the station's exterior.",
+                        "outcome": {
+                            "image": "outcome/act1_enc_abandoned_mining_station_outcome1.png",
+                            "text": "Your team cautiously approaches the station. They manage to secure a decent amount of unprocessed ore and discarded equipment, netting you 75 credits. A few maintenance drones buzz past, but cause no trouble.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 75,
+                            "crewHealthChange": 0,
+                            "nextId": "act1_enc_energy_flare"
+                        }
+                    },
+                    {
+                        "text": "Attempt to bypass the automated defenses and enter the station for a deeper salvage.",
+                        "outcome": {
+                            "image": "outcome/act1_enc_abandoned_mining_station_outcome2.png",
+                            "text": "Jax manages to trick the outer defense grid. Inside, you find a trove of advanced mining tools and refined crystals worth 200 credits! However, an old, unstable power conduit collapses, causing a shockwave that briefly damages your ship.",
+                            "shipHealthChange": -10,
+                            "treasureChange": 200,
+                            "crewHealthChange": 0,
+                            "nextId": "act1_enc_energy_flare"
+                        }
+                    },
+                    {
+                        "text": "Ignore the station. It's too risky for potential meager rewards.",
+                        "outcome": {
+                            "image": "outcome/act1_enc_abandoned_mining_station_outcome3.png",
+                            "text": "You decide against engaging with the old station. While you avoid any risks, you also miss out on potential gains. The journey continues undisturbed.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "nextId": "act1_enc_energy_flare"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "act1_enc_energy_flare",
+                "displayName": "Unstable Energy Flare",
+                "image": "encounters/act1_enc_energy_flare.png",
+                "scenario": "A sudden, intense burst of solar energy erupts from a nearby star. Your ship's systems flash warnings as radiation levels spike. You need to react fast to protect your crew and vessel.",
+                "options": [
+                    {
+                        "text": "Engage emergency deflectors and brace for impact, relying on Zephyr's quick reaction.",
+                        "outcome": {
+                            "image": "outcome/act1_enc_energy_flare_outcome1.png",
+                            "text": "Zephyr's reflexes are unmatched. The deflectors hold, absorbing most of the blast. Your ship takes only minor structural damage, and your crew is rattled but unharmed. A solid defense.",
+                            "shipHealthChange": -5,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "nextId": "act1_enc_smugglers_den"
+                        }
+                    },
+                    {
+                        "text": "Attempt a high-speed evasive maneuver to outrun the worst of the flare.",
+                        "outcome": {
+                            "image": "outcome/act1_enc_energy_flare_outcome2.png",
+                            "text": "You push the engines to maximum, trying to escape the radiation wave. While you avoid a direct hit, the strain on the ship's systems is immense, causing temporary power fluctuations and minor crew discomfort.",
+                            "shipHealthChange": -5,
+                            "treasureChange": 0,
+                            "crewHealthChange": -5,
+                            "nextId": "act1_enc_smugglers_den"
+                        }
+                    },
+                    {
+                        "text": "Deploy sensor probes to study the flare's composition, risking exposure for scientific data.",
+                        "outcome": {
+                            "image": "outcome/act1_enc_energy_flare_outcome3.png",
+                            "text": "Dr. Aris insists on deploying probes. You gather invaluable data on exotic energy phenomena, which sells for 150 credits. However, the radiation spikes cause minor damage to your auxiliary power cells and briefly saps crew morale.",
+                            "shipHealthChange": -5,
+                            "treasureChange": 150,
+                            "crewHealthChange": -5,
+                            "specialEffect": "scientificDataAcquired",
+                            "nextId": "act1_enc3"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "act1_enc_smugglers_den",
+                "displayName": "Smugglers' Den",
+                "image": "encounters/act1_enc_smugglers_den.png",
+                "scenario": "You stumble upon a hidden asteroid base, clearly a haven for smugglers. A rough voice hails you, offering 'goods' for trade. They seem wary but open to business.",
+                "options": [
+                    {
+                        "text": "Attempt to trade for rare components, hoping to repair ship damage (requires 50 credits).",
+                        "outcome": {
+                            "image": "outcome/act1_enc_smugglers_den_outcome1.png",
+                            "text": "You exchange 50 credits for a stash of high-grade ship components. Jax quickly integrates them, repairing some of the damage your ship has sustained. The smugglers nod in approval of your business sense.",
+                            "shipHealthChange": 10,
+                            "treasureChange": -50,
+                            "crewHealthChange": 0,
+                            "nextId": "act1_enc3"
+                        },
+                        "condition": {
+                            "type": "treasure",
+                            "value": 50,
+                            "comparison": "greaterThanOrEqual"
+                        }
+                    },
+                    {
+                        "text": "Attempt to trade for rare components (Not enough credits).",
+                        "outcome": {
+                            "image": "outcome/act1_enc_smugglers_den_outcome_fail.png",
+                            "text": "You attempt to trade, but the smugglers scoff at your insufficient funds. They wave you off, clearly not interested in your meager offerings.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "nextId": "act1_enc3"
+                        },
+                        "condition": {
+                            "type": "treasure",
+                            "value": 50,
+                            "comparison": "lessThan"
+                        }
+                    },
+                    {
+                        "text": "Try to intimidate them into giving you free passage or information.",
+                        "outcome": {
+                            "image": "outcome/act1_enc_smugglers_den_outcome2.png",
+                            "text": "Captain Eva's stern voice echoes through their comms. The smugglers, clearly not expecting such boldness, quickly agree to share some minor navigation data and let you pass, but they seem less than thrilled.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "specialEffect": "minorInfoGain",
+                            "nextId": "act1_enc3"
+                        }
+                    },
+                    {
+                        "text": "Engage them in a high-stakes game of chance. (Conditional: Requires at least 150 credits to play)",
+                        "outcome": {
+                            "image": "outcome/act1_enc_smugglers_den_outcome3.png",
+                            "text": "You engage in a tense game of space poker. Zephyr's intuition for probability pays off, and you win a substantial pot. The smugglers are annoyed, but they honor their debt.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 200,
+                            "crewHealthChange": 0,
+                            "nextId": "act1_enc3"
+                        },
+                        "condition": {
+                            "type": "treasure",
+                            "value": 150,
+                            "comparison": "greaterThanOrEqual"
+                        }
+                    },
+                    {
+                        "text": "Engage them in a high-stakes game of chance. (Not enough credits)",
+                        "outcome": {
+                            "image": "outcome/act1_enc_smugglers_den_outcome_fail.png",
+                            "text": "You attempt to join the game, but the smugglers scoff at your meager credits. You're swiftly dismissed, unable to participate.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "nextId": "act1_enc3"
+                        },
+                        "condition": {
+                            "type": "treasure",
+                            "value": 150,
+                            "comparison": "lessThan"
                         }
                     }
                 ]
             },
             {
                 "id": "act1_enc3",
+                "displayName": "Faint Energy Signal",
                 "image": "encounters/act1_enc3.png",
-                "scenario": "Your long-range sensors detect a faint, rhythmic anomaly – too structured to be natural. Captain Eva believes it might be a hidden, automated defense system or a long-lost cache, emitting a repeating, cryptic signal.",
+                "scenario": "Your long-range sensors detect a faint energy signature – too structured to be natural. Captain Eva believes it might be a hidden, automated defense system or a long-lost cache, containing salvagable components, emitting a repeating, cryptic signal.",
                 "options": [
                     {
                         "text": "Send a small away team (Eva and Aris) to investigate the source of the signal directly.",
                         "outcome": {
-                            "text": "Captain Eva's tactical mind combined with Dr. Aris's intellectual curiosity leads to the discovery of a heavily camouflaged ancient data vault. They successfully bypass its traps, securing valuable navigational data and a small amount of ancient currency. However, a minor energy spike during the bypass briefly overloads your ship's comms.",
+                            "image": "outcome/act1_enc3_outcome1.png",
+                            "text": "Captain Eva's tactical mind combined with Dr. Aris's intellectual curiosity leads to the discovery of a heavily camouflaged ancient data vault. They successfully bypass its traps, securing valuable navigational data and a small amount of ancient currency worth 100 credits. However, a minor energy spike during the bypass briefly overloads your ship's comms.",
                             "shipHealthChange": -5,
                             "treasureChange": 100,
-                            "crewHealthChange": 0
+                            "crewHealthChange": 0,
+                            "nextId": "act2_enc1"
                         }
                     },
                     {
                         "text": "Analyze the signal from a safe distance, trying to decipher its meaning without direct engagement.",
                         "outcome": {
+                            "image": "outcome/act1_enc3_outcome2.png",
                             "text": "You spend valuable time meticulously analyzing the signal from afar. Dr. Aris determines it's a decaying automated distress beacon, but its data is too corrupted to be useful. You avoid danger but gain nothing, and the time spent could have been used more efficiently.",
                             "shipHealthChange": 0,
                             "treasureChange": 0,
-                            "crewHealthChange": 0
+                            "crewHealthChange": 0,
+                            "nextId": "act2_enc1"
                         }
                     }
                 ]
@@ -84,80 +362,305 @@
     },
     {
         "title": "Act 2: The Whispering Wastes",
+        "actDescription": "Ahead lies the treacherous Whispering Wastes, a desolate expanse filled with cosmic threats and moral dilemmas. Press continue to navigate this dangerous sector...",
         "encounters": [
             {
                 "id": "act2_enc1",
+                "displayName": "Asteroid Field Threat",
                 "image": "encounters/act2_enc1.png",
                 "scenario": "You enter a vast asteroid field, and your sensors detect faint energy signatures emanating from several of the larger asteroids. It could be valuable ore, or something more sinister.",
                 "options": [
                     {
                         "text": "Attempt a precise, high-risk maneuver to harvest cosmic pearls without disturbing the creature, relying on Zephyr's piloting.",
                         "outcome": {
-                            "text": "Zephyr executes an incredibly delicate maneuver, weaving the ship close to the leviathan. You manage to extract several large cosmic pearls from its outer layers, significantly boosting your treasure. The creature stirs but doesn't react aggressively, allowing you to depart safely. A truly daring feat!",
+                            "image": "outcome/act2_enc1_outcome1.png",
+                            "text": "Zephyr executes an incredibly delicate maneuver, weaving the ship close to the leviathan. You manage to extract several large cosmic pearls from its outer layers, that could be appraised for 250 credits. The creature stirs but doesn't react aggressively, allowing you to depart safely. A truly daring feat!",
                             "shipHealthChange": 0,
                             "treasureChange": 250,
-                            "crewHealthChange": 0
+                            "crewHealthChange": 0,
+                            "nextId": "act2_enc_ancient_ruins"
                         }
                     },
                     {
                         "text": "Wait for the space whale to pass, taking the safe but time-consuming route around it.",
                         "outcome": {
+                            "image": "outcome/act2_enc1_outcome2.png",
                             "text": "You patiently wait for the immense creature to drift past, taking the long way around. While you avoid any potential conflict, the delay eats into your mission time, and you miss out on a rare opportunity for significant treasure.",
                             "shipHealthChange": 0,
                             "treasureChange": 0,
-                            "crewHealthChange": 0
+                            "crewHealthChange": 0,
+                            "nextId": "act2_enc2"
                         }
                     }
                 ]
             },
             {
                 "id": "act2_enc2",
+                "displayName": "Distress Pod",
                 "image": "encounters/act2_enc2.png",
                 "scenario": "Your scanners detect an abandoned, perfectly intact escape pod adrift. Its internal systems show faint signs of life, but a dangerous, ionized storm is rapidly approaching its location. Retrieving it would be a race against time and the elements.",
                 "options": [
                     {
                         "text": "Launch a rescue mission to retrieve the escape pod, risking exposure to the approaching storm.",
                         "outcome": {
-                            "text": "You brave the fringes of the ionized storm to retrieve the pod. Inside, you find a lone, critically injured, but grateful survivor who turns out to be a skilled engineer. They offer to assist Jax with ship repairs, improving your ship's efficiency and providing some valuable data they recovered from their wrecked vessel. However, the storm causes minor damage to your exterior sensors.",
+                            "image": "outcome/act2_enc2_outcome1.png",
+                            "text": "You brave the fringes of the ionized storm to retrieve the pod. Inside, you find a lone, critically injured survivor—a skilled engineer with little to offer but their expertise. In return for your rescue, they assist Jax with repairs, patching up the worst of the storm’s damage to your sensors. Before departing, they leave you with a small cache of credits worth 50, and a promise to spread word of your crew's bravery.",
                             "shipHealthChange": -10,
                             "treasureChange": 50,
                             "crewHealthChange": -5,
-                            "specialEffect": "jaxEfficiencyBoost"
+                            "specialEffect": "jaxEfficiencyBoost",
+                            "nextId": "act2_enc_merchant_convoy"
                         }
                     },
                     {
                         "text": "It's too dangerous to attempt a rescue. Prioritize the ship's safety and bypass the storm.",
                         "outcome": {
+                            "image": "outcome/act2_enc2_outcome2.png",
                             "text": "You prioritize caution, leaving the escape pod to its fate as the storm engulfs it. You avoid any risk, but the image of the stranded survivor weighs on your conscience. You wonder what valuable information or help you might have forsaken.",
                             "shipHealthChange": 0,
                             "treasureChange": 0,
-                            "crewHealthChange": 0
+                            "crewHealthChange": 0,
+                            "nextId": "act2_enc_merchant_convoy"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "act2_enc_merchant_convoy",
+                "displayName": "Merchant Convoy",
+                "image": "encounters/act2_enc_merchant_convoy.png",
+                "scenario": "A slow-moving merchant convoy, laden with cargo, appears on your long-range scanners. They are likely carrying valuable goods, but are also well-armed and wary of pirates.",
+                "options": [
+                    {
+                        "text": "Hail them peacefully and attempt to trade for supplies or information.",
+                        "outcome": {
+                            "image": "outcome/act2_enc_merchant_convoy_outcome1.png",
+                            "text": "You establish contact. The merchants are cautious but willing to trade. You exchange some of your credits for valuable medical supplies (+10 Crew Health) and a map of local anomalies, which sells for 75 credits. A profitable and amicable exchange.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 75,
+                            "crewHealthChange": 10,
+                            "nextId": "act2_enc3"
+                        },
+                        "condition": {
+                            "type": "treasure",
+                            "value": 25,
+                            "comparison": "greaterThanOrEqual"
+                        }
+                    },
+                    {
+                        "text": "Hail them peacefully and attempt to trade (Not enough credits).",
+                        "outcome": {
+                            "image": "outcome/act2_enc_merchant_convoy_outcome_fail_trade.png",
+                            "text": "You hail them, but without sufficient credits for a worthwhile trade, they politely but firmly decline your request. You leave empty-handed.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "nextId": "act2_enc3"
+                        },
+                        "condition": {
+                            "type": "treasure",
+                            "value": 25,
+                            "comparison": "lessThan"
+                        }
+                    },
+                    {
+                        "text": "Attempt a high-speed ambush to raid their cargo.",
+                        "outcome": {
+                            "image": "outcome/act2_enc_merchant_convoy_outcome2.png",
+                            "text": "Your ambush is swift and brutal. The convoy's escorts are quickly overwhelmed. You secure a large haul of valuable cargo (300 credits), but the merchants' distress signals alert nearby authorities, marking you as a pirate.",
+                            "shipHealthChange": -15,
+                            "treasureChange": 300,
+                            "crewHealthChange": -10,
+                            "specialEffect": "pirateReputation",
+                            "nextId": "act2_enc3"
+                        }
+                    },
+                    {
+                        "text": "Bypass the convoy and proceed, avoiding any engagement.",
+                        "outcome": {
+                            "image": "outcome/act2_enc_merchant_convoy_outcome3.png",
+                            "text": "You opt for caution, altering your course to avoid the convoy. You gain nothing, but avoid any potential conflict or complications. The journey continues smoothly.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "nextId": "act2_enc3"
                         }
                     }
                 ]
             },
             {
                 "id": "act2_enc3",
+                "displayName": "Rival Faction Confrontation",
                 "image": "encounters/act2_enc3.png",
-                "scenario": "A small, heavily armed patrol ship of the Rival Faction and its Pirate Lord appears, blocking your path. They demand a significant toll for passage through their territory.",
+                "scenario": "A small, heavily armed patrol ship of the Rival Faction and its Pirate Lord appears, blocking your path. They demand all your treasure for passage through their territory.",
                 "options": [
                     {
                         "text": "Attempt to intimidate them with a show of force, relying on Captain Eva's commanding presence and your ship's weaponry.",
                         "outcome": {
+                            "image": "outcome/act2_enc3_outcome1.png",
                             "text": "Captain Eva broadcasts a chilling warning, backed by a simulated weapons lock. The enemy hesitates, and after a tense standoff, they decide you're not worth the trouble and back down. You pass through unmolested and without paying tribute, gaining a small boost to your reputation.",
                             "shipHealthChange": 0,
                             "treasureChange": 0,
                             "crewHealthChange": 0,
-                            "specialEffect": "reputationGain"
+                            "specialEffect": "reputationGain",
+                            "nextId": "act2_enc_hostile_patrol_check"
                         }
                     },
                     {
-                        "text": "Attempt to negotiate a smaller fee or offer a diversion, relying on Dr. Aris's quick thinking or Zephyr's evasive skills.",
+                        "text": "Attempt to negotiate a smaller fee or offer a diversion, relying on Dr. Aris's quick thinking and Zephyr's evasive skills.",
                         "outcome": {
+                            "image": "outcome/act2_enc3_outcome2.png",
                             "text": "You try to negotiate, but the enemy is resolute. Your attempts to bargain or evade are met with scorn. They open fire, forcing you to pay a substantial tribute to avoid a protracted fight, damaging your ship and your pride.",
                             "shipHealthChange": -15,
                             "treasureChange": -100,
-                            "crewHealthChange": 0
+                            "crewHealthChange": 0,
+                            "specialEffect": "rivalFactionEncountered",
+                            "nextId": "act2_enc_hostile_patrol_check"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "act2_enc_ancient_ruins",
+                "displayName": "Ancient Ruins Discovery",
+                "image": "encounters/act2_enc_ancient_ruins.png",
+                "scenario": "Your scans pick up the faint, almost imperceptible outline of ancient structures embedded within a rogue planetoid. These ruins predate known galactic civilizations and could hold incredible secrets or dangerous traps.",
+                "options": [
+                    {
+                        "text": "Send an exploration team to cautiously investigate the ruins.",
+                        "outcome": {
+                            "image": "outcome/act2_enc_ancient_ruins_outcome1.png",
+                            "text": "Your team navigates treacherous passageways. They discover a chamber filled with priceless alien artifacts, netting you 300 credits. However, disturbing the ruins activates an ancient defense drone, which damages your ship before it's neutralized.",
+                            "shipHealthChange": -10,
+                            "treasureChange": 300,
+                            "crewHealthChange": 0,
+                            "nextId": "act2_enc_temporal_distortion"
+                        }
+                    },
+                    {
+                        "text": "Attempt a high-power scan from orbit to learn about the ruins without risking a landing.",
+                        "outcome": {
+                            "image": "outcome/act2_enc_ancient_ruins_outcome2.png",
+                            "text": "Your long-range scans yield fascinating but inconclusive data. Dr. Aris deduces the ruins belong to a long-extinct species, but the valuable artifacts remain hidden. You gain knowledge but no material wealth.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "nextId": "act2_enc_temporal_distortion"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "act2_enc_temporal_distortion",
+                "displayName": "Temporal Distortion Field",
+                "image": "encounters/act2_enc_temporal_distortion.png",
+                "scenario": "You enter a strange region of space where time seems to warp and distort. Objects appear to move in slow motion, then suddenly accelerate. Navigating through it is disorienting and potentially dangerous.",
+                "options": [
+                    {
+                        "text": "Navigate slowly and carefully, trying to minimize the effects of the distortion.",
+                        "outcome": {
+                            "image": "outcome/act2_enc_temporal_distortion_outcome1.png",
+                            "text": "Zephyr guides the ship with extreme precision, slowly inching through the anomaly. The journey is long and taxing on the crew, but you emerge with minimal damage. The crew's nerves are frayed.",
+                            "shipHealthChange": -5,
+                            "treasureChange": 0,
+                            "crewHealthChange": -10,
+                            "nextId": "act2_enc_hostile_patrol_check"
+                        }
+                    },
+                    {
+                        "text": "Attempt to exploit the distortion, hoping to jump past the field quickly.",
+                        "outcome": {
+                            "image": "outcome/act2_enc_temporal_distortion_outcome2.png",
+                            "text": "Jax modifies the temporal regulators, attempting to slingshot through the field. It's a wild ride! You skip a significant portion of the Wastes, accelerating your journey, but the sudden jumps strain the ship's systems and disorient the crew.",
+                            "shipHealthChange": -15,
+                            "treasureChange": 0,
+                            "crewHealthChange": -15,
+                            "specialEffect": "skippedSegment",
+                            "nextId": "act3_enc_guardian_sentinels"
+                        }
+                    },
+                    {
+                        "text": "Have Dr. Aris analyze the distortion, seeking scientific understanding.",
+                        "outcome": {
+                            "image": "outcome/act2_enc_temporal_distortion_outcome3.png",
+                            "text": "Dr. Aris bravely runs diagnostics, collecting highly complex data on temporal mechanics. This data could be worth a fortune (200 credits), but the prolonged exposure to the warping field causes minor, but unsettling, hallucinations among the crew.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 200,
+                            "crewHealthChange": -5,
+                            "specialEffect": "temporalDataAcquired",
+                            "nextId": "act2_enc_hostile_patrol_check"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "act2_enc_hostile_patrol_check",
+                "displayName": "Patrol Checkpoint",
+                "image": "encounters/act2_enc_hostile_patrol.png",
+                "scenario": "A routine patrol vessel belonging to the Rival Faction appears. They initiate standard comms. If you have previously angered them, this could be a difficult encounter.",
+                "options": [
+                    {
+                        "text": "Attempt to bluff your way through. (Conditional: If Rival Faction was NOT previously encountered negatively)",
+                        "outcome": {
+                            "image": "outcome/act2_enc_hostile_patrol_outcome1.png",
+                            "text": "You confidently provide false identification codes. The patrol, having no prior issues with your vessel, accepts your story and waves you through without incident.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "nextId": "act3_enc_nebula_heart"
+                        },
+                        "condition": {
+                            "type": "specialEffect",
+                            "flag": "rivalFactionEncountered",
+                            "comparison": "not_set"
+                        }
+                    },
+                    {
+                        "text": "Prepare for evasive maneuvers and a potential fight. (Conditional: If Rival Faction was previously encountered negatively)",
+                        "outcome": {
+                            "image": "outcome/act2_enc_hostile_patrol_outcome2.png",
+                            "text": "As expected, the patrol recognizes your ship from a previous confrontation. They open fire. You manage to escape after a brief, damaging skirmish, but the pursuit leaves your ship in worse condition.",
+                            "shipHealthChange": -20,
+                            "treasureChange": 0,
+                            "crewHealthChange": -5,
+                            "nextId": "act3_enc_nebula_heart"
+                        },
+                        "condition": {
+                            "type": "specialEffect",
+                            "flag": "rivalFactionEncountered",
+                            "comparison": "set"
+                        }
+                    },
+                    {
+                        "text": "Attempt to pay them off. (Requires 50 credits)",
+                        "outcome": {
+                            "image": "outcome/act2_enc_hostile_patrol_outcome3.png",
+                            "text": "You discreetly transfer 50 credits to their account. The patrol 'misses' your ship on their sensors and allows you to pass, but the exchange leaves a bitter taste.",
+                            "shipHealthChange": 0,
+                            "treasureChange": -50,
+                            "crewHealthChange": 0,
+                            "nextId": "act3_enc_nebula_heart"
+                        },
+                        "condition": {
+                            "type": "treasure",
+                            "value": 50,
+                            "comparison": "greaterThanOrEqual"
+                        }
+                    },
+                    {
+                        "text": "Attempt to pay them off. (Not enough credits)",
+                        "outcome": {
+                            "image": "outcome/act2_enc_hostile_patrol_outcome_fail.png",
+                            "text": "You try to offer a bribe, but the patrol captain laughs when they see your insufficient funds. They open fire, forcing you to flee with damage.",
+                            "shipHealthChange": -15,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "nextId": "act3_enc_nebula_heart"
+                        },
+                        "condition": {
+                            "type": "treasure",
+                            "value": 50,
+                            "comparison": "lessThan"
                         }
                     }
                 ]
@@ -167,78 +670,343 @@
     },
     {
         "title": "Act 3: Heart of the Nebula",
+        "actDescription": "You've reached the final frontier! The Star-Heart Gem is within your grasp, but a formidable challenge awaits as you continue deep into the void. Press continue to face your ultimate trial...",
         "encounters": [
             {
+                "id": "act3_enc_nebula_heart",
+                "displayName": "The Nebula's Calming Heart",
+                "image": "encounters/act3_enc_nebula_heart.png",
+                "scenario": "You drift into a serene, almost silent region of the nebula. The swirling cosmic dust here emits a soft, comforting glow. Your sensors indicate unusually stable energy fields. It feels like a moment of peace before the final push.",
+                "options": [
+                    {
+                        "text": "Allow the crew a brief moment of respite and reflection.",
+                        "outcome": {
+                            "image": "outcome/act3_enc_nebula_heart_outcome1.png",
+                            "text": "The quiet solitude calms frayed nerves. Your crew emerges from the brief pause refreshed and reinvigorated, ready for the challenges ahead.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 0,
+                            "crewHealthChange": 10,
+                            "nextId": "act3_enc_guardian_sentinels"
+                        }
+                    },
+                    {
+                        "text": "Attempt to siphon the stable energy fields for a temporary ship boost.",
+                        "outcome": {
+                            "image": "outcome/act3_enc_nebula_heart_outcome2.png",
+                            "text": "Jax carefully extends energy conduits into the stable fields. You absorb a burst of pure energy, giving your ship a temporary surge of power and minor repairs.",
+                            "shipHealthChange": 5,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "specialEffect": "finalPowerSurge",
+                            "nextId": "act3_enc_guardian_sentinels"
+                        }
+                    },
+                    {
+                        "text": "Analyze the unique energy signature for potential valuable data.",
+                        "outcome": {
+                            "image": "outcome/act3_enc_nebula_heart_outcome3.png",
+                            "text": "Dr. Aris quickly scans the unique energy. He gathers enough data to potentially sell for 50 credits, but the delicate analysis means less focus on preparing for the next challenge.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 50,
+                            "crewHealthChange": 0,
+                            "nextId": "act3_enc1"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "act3_enc_guardian_sentinels",
+                "displayName": "Ancient Guardian Sentinels",
+                "image": "encounters/act3_enc_guardian_sentinels.png",
+                "scenario": "As you approach the Star-Heart Gem's coordinates, your path is blocked by three massive, silent constructs. These are ancient guardian sentinels, dormant for ages, now activating and aligning their weapons, clearly designed to protect the gem.",
+                "options": [
+                    {
+                        "text": "Attempt to bypass them using Zephyr's stealth and evasion tactics. (Requires high Crew Morale)",
+                        "outcome": {
+                            "image": "outcome/act3_enc_guardian_sentinels_outcome1.png",
+                            "text": "Zephyr masterfully guides the ship through a complex pattern of nebula currents and asteroid shadows. The sentinels' ancient targeting systems are too slow to lock on, and you slip past undetected, preserving your ship and crew for the final objective.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "nextId": "act3_enc1"
+                        },
+                        "condition": {
+                            "type": "crewHealth",
+                            "value": 80,
+                            "comparison": "greaterThanOrEqual"
+                        }
+                    },
+                    {
+                        "text": "Attempt to bypass them using Zephyr's stealth (Crew Morale too low).",
+                        "outcome": {
+                            "image": "outcome/act3_enc_guardian_sentinels_outcome_fail_stealth.png",
+                            "text": "Zephyr attempts the evasive maneuvers, but the crew's low morale makes coordination difficult. The sentinels react, locking on and firing. You manage to escape, but not without taking heavy damage and further disheartening the crew.",
+                            "shipHealthChange": -20,
+                            "treasureChange": 0,
+                            "crewHealthChange": -10,
+                            "nextId": "act3_enc1"
+                        },
+                        "condition": {
+                            "type": "crewHealth",
+                            "value": 80,
+                            "comparison": "lessThan"
+                        }
+                    },
+                    {
+                        "text": "Engage the sentinels directly, focusing fire on their core reactors.",
+                        "outcome": {
+                            "image": "outcome/act3_enc_guardian_sentinels_outcome2.png",
+                            "text": "You unleash your ship's full firepower. The sentinels are tough, but their ancient defenses are not impenetrable. You destroy them, clearing the path, but the battle is costly, and your ship takes significant damage.",
+                            "shipHealthChange": -25,
+                            "treasureChange": 0,
+                            "crewHealthChange": -5,
+                            "nextId": "act3_enc1"
+                        }
+                    },
+                    {
+                        "text": "Attempt to negotiate with the sentinels using the ancient data. (Conditional: Requires 'scientificDataAcquired')",
+                        "outcome": {
+                            "image": "outcome/act3_enc_guardian_sentinels_outcome3.png",
+                            "text": "Dr. Aris broadcasts complex data patterns to the sentinels. Their weapon systems flicker, and their glowing eyes dim. They recognize the ancient scientific knowledge, lower their guard, and allow you to pass, seemingly having completed their purpose. A true feat of intellect!",
+                            "shipHealthChange": 0,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "nextId": "act3_enc1"
+                        },
+                        "condition": {
+                            "type": "specialEffect",
+                            "flag": "scientificDataAcquired",
+                            "comparison": "set"
+                        }
+                    }
+                ]
+            },
+            {
                 "id": "act3_enc1",
+                "displayName": "Star-Heart Gem Chamber",
                 "image": "encounters/act3_enc1.png",
                 "scenario": "You've reached the suspected location of the Star-Heart Gem. A massive, ancient alien structure looms in the void, radiating immense energy. It's protected by an energy shield.",
                 "options": [
                     {
                         "text": "Have Jax meticulously reconfigure the conduits to safely disable the defenses and claim the gem.",
                         "outcome": {
+                            "image": "outcome/act3_enc1_outcome1.png",
                             "text": "Jax, grumbling but focused, works with incredible precision. One by one, the conduits disengage, and the Star-Heart Gem's protective field dissipates without incident. You claim the gem successfully and intact, a true testament to his engineering prowess. You also manage to siphon off a small amount of residual energy, slightly patching your ship's hull.",
                             "shipHealthChange": 10,
                             "treasureChange": 500,
-                            "crewHealthChange": 0
+                            "crewHealthChange": 0,
+                            "nextId": "act3_enc2"
                         }
                     },
                     {
                         "text": "Attempt to overload the central conduit, hoping to short-circuit the entire defense system.",
                         "outcome": {
+                            "image": "outcome/act3_enc1_outcome2.png",
                             "text": "You attempt to overload the system, but the ancient technology resists your brute-force approach. The conduits surge violently, triggering a localized energy discharge that severely damages the surrounding chamber and your ship. You manage to grab the gem, but at a heavy cost.",
                             "shipHealthChange": -30,
                             "treasureChange": 500,
-                            "crewHealthChange": -10
+                            "crewHealthChange": -10,
+                            "nextId": "act3_enc2"
+                        }
+                    },
+                    {
+                        "text": "Use the unique resonant frequency discovered earlier to destabilize the shield. (Conditional: Requires 'shipShieldBoost' special effect)",
+                        "outcome": {
+                            "image": "outcome/act3_enc1_outcome3.png",
+                            "text": "Remembering the crystalline organism's frequency, Zephyr modulates your shields. The ancient defense system flickers, unable to cope with the unexpected resonance, and collapses. You claim the gem with minimal effort and no damage, a true tactical triumph!",
+                            "shipHealthChange": 0,
+                            "treasureChange": 550,
+                            "crewHealthChange": 0,
+                            "nextId": "act3_enc_escape_route"
+                        },
+                        "condition": {
+                            "type": "specialEffect",
+                            "flag": "shipShieldBoost",
+                            "comparison": "set"
+                        }
+                    },
+                    {
+                        "text": "Analyze the shield's weak points before proceeding. (Requires Dr. Aris's insight)",
+                        "outcome": {
+                            "image": "outcome/act3_enc1_outcome4.png",
+                            "text": "Dr. Aris spends crucial moments analyzing the shield's energy patterns. He identifies a single, fluctuating conduit. You target it with precision fire, disabling the shield efficiently but draining a lot of energy.",
+                            "shipHealthChange": -5,
+                            "treasureChange": 500,
+                            "crewHealthChange": 0,
+                            "nextId": "act3_enc2"
                         }
                     }
                 ]
             },
             {
                 "id": "act3_enc2",
+                "displayName": "Collapsing Chamber Escape",
                 "image": "encounters/act3_enc2.png",
                 "scenario": "As you secure the Star-Heart Gem, the chamber begins to collapse! The ancient structure, weakened by your presence, is tearing itself apart. You need to escape immediately, but debris is falling rapidly, threatening to crush the ship.",
                 "options": [
                     {
                         "text": "Zephyr attempts a desperate, high-speed evasive maneuver through the collapsing structure.",
                         "outcome": {
+                            "image": "outcome/act3_enc2_outcome1.png",
                             "text": "Zephyr pushes the ship to its absolute limits, performing gravity-defying rolls and dives. Debris scrapes past your hull, but you manage to burst free of the collapsing structure just as it implodes. A truly breathtaking escape, proving Zephyr's unparalleled piloting.",
                             "shipHealthChange": -10,
                             "treasureChange": 0,
-                            "crewHealthChange": 0
+                            "crewHealthChange": 0,
+                            "nextId": "act3_enc3"
                         }
                     },
                     {
                         "text": "Captain Eva orders a defensive retreat, attempting to shield the ship with remaining energy while moving slowly.",
                         "outcome": {
+                            "image": "outcome/act3_enc2_outcome2.png",
                             "text": "Captain Eva activates defensive protocols, but the sheer force of the collapsing structure is overwhelming. Heavy debris rains down, severely impacting your ship's shields and hull. You escape, but the ship is a battered wreck, and the crew is shaken.",
                             "shipHealthChange": -35,
                             "treasureChange": 0,
-                            "crewHealthChange": -5
+                            "crewHealthChange": -5,
+                            "nextId": "act3_enc3"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "act3_enc_escape_route",
+                "displayName": "Emergency Escape Route",
+                "image": "encounters/act3_enc_escape_route.png",
+                "scenario": "Your efficient gem retrieval has left the chamber somewhat stable, but alarms blare. An emergency escape route, narrow but direct, flashes on your navigation. It seems less dangerous than the main path.",
+                "options": [
+                    {
+                        "text": "Take the emergency escape route, relying on Zephyr's precision piloting.",
+                        "outcome": {
+                            "image": "outcome/act3_enc_escape_route_outcome1.png",
+                            "text": "Zephyr expertly navigates the tight corridor, narrowly avoiding energy traps and collapsing sections. You emerge safely, having bypassed a more chaotic escape. Your ship is untouched, but the shortcut leads you to a less advantageous position for the final confrontation.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "nextId": "act3_enc3_flanked"
+                        }
+                    },
+                    {
+                        "text": "Stick to the main path, using your ship's full power to blast through any remaining obstacles.",
+                        "outcome": {
+                            "image": "outcome/act3_enc_escape_route_outcome2.png",
+                            "text": "You blast your way through the crumbling chamber. While effective, the sheer force of the explosions causes some structural stress to your hull. You exit onto the main approach, ready for the final battle.",
+                            "shipHealthChange": -10,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "nextId": "act3_enc3"
                         }
                     }
                 ]
             },
             {
                 "id": "act3_enc3",
+                "displayName": "Dreadnought Final Battle",
                 "image": "encounters/act3_enc3.png",
                 "scenario": "You've made it out, Star-Heart Gem in hand, but a formidable, massive alien dreadnought is waiting. It's clearly here for the gem, and its weapons are already charged. This is the final stand.",
                 "options": [
                     {
                         "text": "Initiate a full-scale assault, focusing fire on key weak points identified by Aris, and relying on Eva's tactical commands.",
                         "outcome": {
+                            "image": "outcome/act3_enc3_outcome1.png",
                             "text": "Captain Eva barks orders, directing concentrated fire at vulnerabilities Dr. Aris pinpointed. It's a brutal, drawn-out battle. Your ship takes heavy hits, and the crew fights valiantly, but you manage to cripple the dreadnought, forcing its retreat or destruction. A costly but decisive victory!",
                             "shipHealthChange": -50,
                             "treasureChange": 0,
-                            "crewHealthChange": -20
+                            "crewHealthChange": -20,
+                            "nextId": null
                         }
                     },
                     {
                         "text": "Attempt a suicidal distraction maneuver, allowing Zephyr to jump to FTL while Jax tries to keep their shields occupied.",
                         "outcome": {
+                            "image": "outcome/act3_enc3_outcome2.png",
                             "text": "With Jax drawing enemy fire and Zephyr pushing the FTL drive beyond safe limits, you make a daring escape. The dreadnought is momentarily confused, allowing you to slip away into hyperspace. The ship sustains extreme stress damage, and Jax's makeshift diversion causes internal explosions, but you live to fight another day.",
                             "shipHealthChange": -40,
                             "treasureChange": 0,
-                            "crewHealthChange": -10
+                            "crewHealthChange": -10,
+                            "nextId": null
+                        }
+                    },
+                    {
+                        "text": "Attempt to disable their FTL drive before engaging. (Requires high Ship Health)",
+                        "outcome": {
+                            "image": "outcome/act3_enc3_outcome3.png",
+                            "text": "You dedicate a significant portion of your ship's remaining power to a targeted FTL disruptor. The dreadnought's engines sputter, leaving it vulnerable. You engage at close range, winning a decisive victory with less damage, but your ship feels drained.",
+                            "shipHealthChange": -20,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "nextId": null
+                        },
+                        "condition": {
+                            "type": "shipHealth",
+                            "value": 70,
+                            "comparison": "greaterThanOrEqual"
+                        }
+                    },
+                    {
+                        "text": "Attempt to disable their FTL drive before engaging. (Not enough Ship Health)",
+                        "outcome": {
+                            "image": "outcome/act3_enc3_outcome_fail.png",
+                            "text": "You attempt the FTL disruptor, but your ship lacks the power. The attempt fails, and the dreadnought retaliates with devastating fire.",
+                            "shipHealthChange": -60,
+                            "treasureChange": 0,
+                            "crewHealthChange": -25,
+                            "nextId": null
+                        },
+                        "condition": {
+                            "type": "shipHealth",
+                            "value": 70,
+                            "comparison": "lessThan"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "act3_enc3_flanked",
+                "displayName": "Dreadnought Flanked Battle",
+                "image": "encounters/act3_enc3_flanked.png",
+                "scenario": "You've made it out through the emergency route, Star-Heart Gem in hand, but the massive alien dreadnought is waiting. Your escape route has put you in a slightly compromised, but perhaps unexpected, position.",
+                "options": [
+                    {
+                        "text": "Initiate a surprise attack from your flanking position, targeting their less-shielded rear.",
+                        "outcome": {
+                            "image": "outcome/act3_enc3_flanked_outcome1.png",
+                            "text": "Captain Eva barks orders, exploiting your flanking position. The dreadnought is caught off guard, taking heavy damage to its vulnerable rear. The battle is quicker and less damaging to your ship, but the enemy still retaliates fiercely.",
+                            "shipHealthChange": -30,
+                            "treasureChange": 0,
+                            "crewHealthChange": -10,
+                            "nextId": null
+                        }
+                    },
+                    {
+                        "text": "Attempt to negotiate for safe passage, leveraging the element of surprise. (Requires 200 credits)",
+                        "outcome": {
+                            "image": "outcome/act3_enc3_flanked_outcome2.png",
+                            "text": "You hail the dreadnought, demanding safe passage. The pirate lord, startled by your sudden appearance from an unexpected angle, agrees to let you pass for a substantial sum of credits. A costly but bloodless escape.",
+                            "shipHealthChange": 0,
+                            "treasureChange": -200,
+                            "crewHealthChange": 0,
+                            "nextId": null
+                        },
+                        "condition": {
+                            "type": "treasure",
+                            "value": 200,
+                            "comparison": "greaterThanOrEqual"
+                        }
+                    },
+                    {
+                        "text": "Attempt to negotiate for safe passage (Not enough credits).",
+                        "outcome": {
+                            "image": "outcome/act3_enc3_flanked_outcome_fail.png",
+                            "text": "You attempt to negotiate, but when they learn you lack the funds, they engage, unleashing their full fury.",
+                            "shipHealthChange": -50,
+                            "treasureChange": 0,
+                            "crewHealthChange": -15,
+                            "nextId": null
+                        },
+                        "condition": {
+                            "type": "treasure",
+                            "value": 200,
+                            "comparison": "lessThan"
                         }
                     }
                 ]
