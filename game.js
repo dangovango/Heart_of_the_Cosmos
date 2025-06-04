@@ -1,4 +1,4 @@
-let gameData = {}; // This will hold all parsed data (characters, acts, encounters lookup)
+let gameData = {};
 const staticGameNarrative = {
     splashScreen: {
         title: "Heart of the Cosmos",
@@ -21,28 +21,26 @@ const pageTitles = {
     'introGame': 'Introduction',
     'introCrewDynamics': 'Your Crew',
     'missionBrief': 'Mission Brief',
-    'results': 'Encounter Results', // This page will now display outcome text
+    'results': 'Encounter Results',
     'conclusion': 'You Have Completed Your Quest!',
     'gameOver': 'Game Over!',
     'error': 'Error'
 };
 
-// --- UPDATED: Initial gameState with new flags for special effects ---
 let gameState = {
     currentPage: 'loading',
     shipHealth: 100,
     crewHealth: 100,
     treasure: 0,
-    currentAct: 0, // Index of the current act in the 'acts' array
-    currentEncounterId: null, // NOW STORES THE ID OF THE CURRENT ENCOUNTER
-    lastChoiceOutcome: null, // Stores the full outcome object of the last choice made
-    rivalFactionEncountered: false, // Flag for rival faction encounters
-    shipShieldBoostActive: false, // Flag for the 'shipShieldBoost' special effect
-    specialEffects: [], // An array to hold other active special effects (e.g., 'nebulaShortcutUnlocked', 'jaxEfficiencyBoost')
+    currentAct: 0,
+    currentEncounterId: null,
+    lastChoiceOutcome: null,
+    rivalFactionEncountered: false,
+    shipShieldBoostActive: false,
+    specialEffects: [],
     gameOverReason: null
 };
 
-// --- DOM Elements ---
 const gameTitleElem = document.getElementById('game-title');
 const gameSubtitleElem = document.getElementById('game-subtitle');
 const characterPortraitElem = document.getElementById('character-portrait');
@@ -62,13 +60,6 @@ let currentTypingResolve = null;
 let isTypingActive = false;
 let currentlyTypingElement = null;
 
-// --- Helper Functions ---
-
-/**
- * Determines the title for the current page based on its ID and game state.
- * @param {string} pageId - The ID of the current page.
- * @returns {string} The formatted page title.
- */
 function getPageTitle(pageId) {
     if (pageTitles[pageId]) {
         return pageTitles[pageId];
@@ -76,26 +67,21 @@ function getPageTitle(pageId) {
     if (pageId === 'splashScreen') {
         return staticGameNarrative.splashScreen.title;
     }
-    // Updated: For 'actTitle', use the act's title from gameData
     if (pageId === 'actTitle' && gameData.acts && gameData.acts[gameState.currentAct]) {
         return gameData.acts[gameState.currentAct].title;
     }
     if (pageId === 'actSummary' && gameData.acts && gameData.acts[gameState.currentAct]) {
         return `Act ${gameState.currentAct + 1} Summary`;
     }
-    // Updated: For 'encounter', use the Act's title and the Encounter's displayName
     if (pageId === 'encounter' && gameData.acts && gameData.acts[gameState.currentAct] && gameState.currentEncounterId) {
         const currentAct = gameData.acts[gameState.currentAct];
         const currentEncounter = gameData.encounterLookup[gameState.currentEncounterId];
         if (currentEncounter && currentAct) {
-            // Split "Act 1: The Nebula's Embrace" to get just "Act 1" and combine with displayName
             return `${currentAct.title.split(':')[0]}: ${currentEncounter.displayName}`;
         }
     }
     if (pageId === 'characterIntro' && gameData.characters) {
-        // This logic remains the same for character intros
         const charKeys = Object.keys(gameData.characters);
-        // currentEncounter is used here to cycle through characters (assuming it's 1-indexed for chars)
         const currentCharIndex = gameState.currentEncounter - 1;
         const currentChar = gameData.characters[charKeys[currentCharIndex]];
         if (currentChar) {
@@ -105,11 +91,6 @@ function getPageTitle(pageId) {
     return `Page: ${pageId}`;
 }
 
-/**
- * Retrieves an encounter object by its ID from the global encounter lookup table.
- * @param {string} encounterId - The ID of the encounter to find.
- * @returns {object|null} The encounter object or null if not found.
- */
 function getEncounterById(encounterId) {
     if (gameData.encounterLookup && gameData.encounterLookup[encounterId]) {
         return gameData.encounterLookup[encounterId];
@@ -117,7 +98,6 @@ function getEncounterById(encounterId) {
     console.error(`Encounter with ID "${encounterId}" not found in lookup table.`);
     return null;
 }
-
 
 function playBgMusic() {
     bgMusic.volume = 0.3;
@@ -155,6 +135,7 @@ function updateStatusDisplay() {
     statusDisplayElem.classList.remove('hidden');
 }
 
+// MODIFIED: typeText function to handle HTML tags
 async function typeText(element, text, speed = 30) {
     return new Promise(resolve => {
         if (typingInterval) {
@@ -162,19 +143,30 @@ async function typeText(element, text, speed = 30) {
         }
         stopTypingSfx();
 
-        element.textContent = '';
+        element.textContent = ''; // Clear text content initially
+        element.removeAttribute('data-full-text-html'); // Clear previous HTML data
+
         let i = 0;
 
         currentTypingResolve = resolve;
         currentlyTypingElement = element;
         isTypingActive = true;
 
+        // Store the original text with HTML for when typing is skipped
+        element.setAttribute('data-full-text-html', text);
+
         startTypingSfx();
 
         typingInterval = setInterval(() => {
             if (i < text.length) {
-                element.textContent += text.charAt(i);
-                i++;
+                // Check if the current characters form a <br> tag
+                if (text.substring(i, i + 4) === '<br>') {
+                    element.innerHTML += '<br>'; // Append the actual line break
+                    i += 4; // Advance index past the entire <br> tag
+                } else {
+                    element.innerHTML += text.charAt(i); // Append character using innerHTML
+                    i++;
+                }
             } else {
                 clearInterval(typingInterval);
                 stopTypingSfx();
@@ -187,6 +179,7 @@ async function typeText(element, text, speed = 30) {
     });
 }
 
+// MODIFIED: handleGlobalInteractionToSkip function to use innerHTML
 function handleGlobalInteractionToSkip(event) {
     if (event.type === 'keydown' && (event.key === ' ' || event.key === 'Enter')) {
         event.preventDefault();
@@ -196,9 +189,10 @@ function handleGlobalInteractionToSkip(event) {
         clearInterval(typingInterval);
         stopTypingSfx();
 
-        const fullText = currentlyTypingElement.getAttribute('data-full-text');
-        if (fullText) {
-            currentlyTypingElement.textContent = fullText;
+        // Retrieve the full text with HTML
+        const fullHtml = currentlyTypingElement.getAttribute('data-full-text-html');
+        if (fullHtml) {
+            currentlyTypingElement.innerHTML = fullHtml; // Set as innerHTML
         }
 
         isTypingActive = false;
@@ -210,12 +204,7 @@ function handleGlobalInteractionToSkip(event) {
     }
 }
 
-/**
- * Main function to display different game pages based on gameState.currentPage.
- * @param {string} pageId - The ID of the page to display.
- */
 async function displayPage(pageId) {
-    // Hide all major containers initially
     gameTitleElem.classList.add('hidden');
     gameSubtitleElem.classList.add('hidden');
     gameContentElem.classList.add('hidden');
@@ -226,13 +215,11 @@ async function displayPage(pageId) {
     characterPortraitElem.classList.add('hidden');
     encounterImageElem.classList.add('hidden');
 
-    // Clear previous content
     gameTitleElem.textContent = '';
     gameSubtitleElem.textContent = '';
     gameContentElem.textContent = '';
     choicesContainerElem.innerHTML = '';
 
-    // Stop any active typing
     if (isTypingActive) {
         clearInterval(typingInterval);
         stopTypingSfx();
@@ -244,24 +231,21 @@ async function displayPage(pageId) {
         currentlyTypingElement = null;
     }
 
-    // Disable buttons while typing/loading
     nextButton.disabled = true;
-    // Don't disable choicesContainerElem directly, but the buttons inside it
     document.querySelectorAll('.choice-button').forEach(button => button.disabled = true);
 
-
-    // Set data-full-text attribute for typing skip functionality
+    // Removed data-full-text as it's replaced by data-full-text-html in typeText
     gameTitleElem.removeAttribute('data-full-text');
     gameSubtitleElem.removeAttribute('data-full-text');
     gameContentElem.removeAttribute('data-full-text');
 
+
     const titleText = getPageTitle(pageId);
     if (titleText) {
         gameTitleElem.classList.remove('hidden');
-        gameTitleElem.setAttribute('data-full-text', titleText);
+        // Now typeText internally manages setting 'data-full-text-html'
     }
 
-    // --- Page Specific Logic ---
     switch (pageId) {
         case 'loading':
             gameTitleElem.textContent = "Loading Game Data...";
@@ -278,7 +262,6 @@ async function displayPage(pageId) {
             }
 
             await typeText(gameTitleElem, titleText, 50);
-            gameSubtitleElem.setAttribute('data-full-text', staticGameNarrative.splashScreen.subtitle);
             await typeText(gameSubtitleElem, staticGameNarrative.splashScreen.subtitle, 40);
             nextButton.textContent = "Launch Into the Unknown";
             nextButton.disabled = false;
@@ -296,7 +279,6 @@ async function displayPage(pageId) {
             if (pageId === 'introCrewDynamics') contentText = staticGameNarrative.introCrewDynamics.text;
             if (pageId === 'missionBrief') contentText = staticGameNarrative.missionBrief.text;
 
-            gameContentElem.setAttribute('data-full-text', contentText);
             await typeText(gameContentElem, contentText, 30);
             nextButton.textContent = "Continue";
             nextButton.disabled = false;
@@ -305,13 +287,11 @@ async function displayPage(pageId) {
         case 'characterIntro':
             if (!gameData.characters) {
                 console.error("Characters data not loaded yet!");
-                // Fallback to mission brief if characters don't load or all intros are done
                 gameState.currentPage = 'missionBrief';
                 displayPage(gameState.currentPage);
                 return;
             }
             const charKeys = Object.keys(gameData.characters);
-            // currentEncounter is used here to cycle through characters (1-indexed)
             const currentCharIndex = gameState.currentEncounter - 1;
             const currentChar = gameData.characters[charKeys[currentCharIndex]];
 
@@ -325,15 +305,13 @@ async function displayPage(pageId) {
                 const imagePath = `assets/${currentChar.portrait}`;
                 characterPortraitElem.src = imagePath;
 
-                let traitsText = `Traits:\n`;
-                traitsText += currentChar.traits.map(trait => `  - ${trait}`).join('\n');
-                gameContentElem.setAttribute('data-full-text', traitsText);
+                let traitsText = `Traits:<br>`; // Changed to <br> for consistency if desired
+                traitsText += currentChar.traits.map(trait => `  - ${trait}`).join('<br>');
                 await typeText(gameContentElem, traitsText, 30);
 
                 nextButton.textContent = "Continue";
                 nextButton.disabled = false;
             } else {
-                // No more characters to introduce, move to mission brief
                 gameState.currentPage = 'missionBrief';
                 displayPage(gameState.currentPage);
                 return;
@@ -353,7 +331,6 @@ async function displayPage(pageId) {
             const actDescriptionText = currentAct.actDescription || "Press continue to face your first encounter...";
 
             await typeText(gameTitleElem, titleText, 50);
-            gameContentElem.setAttribute('data-full-text', actDescriptionText);
             await typeText(gameContentElem, actDescriptionText, 30);
             nextButton.textContent = "Continue";
             nextButton.disabled = false;
@@ -365,41 +342,37 @@ async function displayPage(pageId) {
                 endGame("error");
                 return;
             }
-            // Get the current encounter using its ID
             const encounter = getEncounterById(gameState.currentEncounterId);
 
             if (!encounter) {
                 console.error("Could not find encounter for currentEncounterId:", gameState.currentEncounterId);
-                endGame("error"); // Handle case where ID is invalid
+                endGame("error");
                 return;
             }
 
-            // Title is handled by getPageTitle for 'encounter'
-            await typeText(gameTitleElem, getPageTitle('encounter'), 50); // Type the dynamic title
+            await typeText(gameTitleElem, getPageTitle('encounter'), 50);
 
             gameContentElem.classList.remove('hidden');
 
             if (encounter.image) {
-                encounterImageElem.src = `assets/${encounter.image}`; // Make sure image path is correct
+                encounterImageElem.src = `assets/${encounter.image}`;
                 encounterImageElem.classList.remove('hidden');
             } else {
                 encounterImageElem.classList.add('hidden');
             }
 
-            gameContentElem.setAttribute('data-full-text', encounter.scenario);
             await typeText(gameContentElem, encounter.scenario);
 
             choicesContainerElem.classList.remove('hidden');
             updateStatusDisplay();
 
-            // --- UPDATED: Create and append option buttons with condition checks ---
             encounter.options.forEach((option) => {
-                let showOption = true; // Assume option is shown by default
+                let showOption = true;
 
                 if (option.condition) {
                     const conditionType = option.condition.type;
                     const conditionValue = option.condition.value;
-                    const conditionFlag = option.condition.flag; // For specialEffect type
+                    const conditionFlag = option.condition.flag;
                     const comparison = option.condition.comparison;
 
                     switch (conditionType) {
@@ -438,7 +411,6 @@ async function displayPage(pageId) {
                                     showOption = !gameState.shipShieldBoostActive;
                                 }
                             } else {
-                                // For generic specialEffects array
                                 if (comparison === "set") {
                                     showOption = gameState.specialEffects.includes(conditionFlag);
                                 } else if (comparison === "not_set") {
@@ -449,22 +421,18 @@ async function displayPage(pageId) {
                     }
                 }
 
-                // Only create the button if the condition is met (or if there's no condition)
                 if (showOption) {
                     const choiceButton = document.createElement('button');
                     choiceButton.classList.add('game-button', 'choice-button');
                     choiceButton.textContent = option.text;
                     choiceButton.addEventListener('click', (e) => {
                         e.stopPropagation();
-                        // Pass the entire outcome object to handleChoice
                         handleChoice(option.outcome);
                     });
                     choicesContainerElem.appendChild(choiceButton);
                 }
             });
-            // --- END UPDATED ---
-
-            document.querySelectorAll('.choice-button').forEach(button => button.disabled = false); // Enable choice buttons
+            document.querySelectorAll('.choice-button').forEach(button => button.disabled = false);
             break;
 
         case 'results':
@@ -477,10 +445,8 @@ async function displayPage(pageId) {
             gameContentElem.classList.remove('hidden');
             nextButton.classList.remove('hidden');
 
-            await typeText(gameTitleElem, titleText, 50); // "Encounter Results"
+            await typeText(gameTitleElem, titleText, 50);
 
-            // Display the outcome text
-            gameContentElem.setAttribute('data-full-text', gameState.lastChoiceOutcome.text);
             await typeText(gameContentElem, gameState.lastChoiceOutcome.text);
 
             if (gameState.lastChoiceOutcome.image) {
@@ -490,7 +456,6 @@ async function displayPage(pageId) {
                 encounterImageElem.classList.add('hidden');
             }
 
-            // Stats already updated in handleChoice, just refresh display
             updateStatusDisplay();
 
             nextButton.textContent = "Continue";
@@ -507,8 +472,7 @@ async function displayPage(pageId) {
             gameContentElem.classList.remove('hidden');
             nextButton.classList.remove('hidden');
 
-            await typeText(gameTitleElem, titleText, 50); // "Act X Summary"
-            gameContentElem.setAttribute('data-full-text', currentActSummaryText);
+            await typeText(gameTitleElem, titleText, 50);
             await typeText(gameContentElem, currentActSummaryText, 30);
             nextButton.textContent = "Proceed to Next Act";
             updateStatusDisplay();
@@ -518,11 +482,11 @@ async function displayPage(pageId) {
         case 'conclusion':
             gameContentElem.classList.remove('hidden');
             nextButton.classList.remove('hidden');
-            stopBgMusic(); // Stop music at conclusion
+            stopBgMusic();
 
             await typeText(gameTitleElem, titleText, 50);
 
-            let conclusionText = staticGameNarrative.conclusion + "\n\n";
+            let conclusionText = staticGameNarrative.conclusion + "<br><br>";
             conclusionText += `Final Ship Health: ${gameState.shipHealth}<br>`;
             conclusionText += `Final Crew Morale: ${gameState.crewHealth}<br>`;
             conclusionText += `Final Treasure: ${gameState.treasure} credits<br><br>`;
@@ -563,7 +527,6 @@ async function displayPage(pageId) {
                 conclusionText += "Though your journey concluded, it was fraught with struggle. Perhaps next time, greater fortunes await.";
             }
 
-            gameContentElem.setAttribute('data-full-text', conclusionText);
             await typeText(gameContentElem, conclusionText, 30);
 
             nextButton.textContent = "Restart Game";
@@ -573,7 +536,7 @@ async function displayPage(pageId) {
         case 'gameOver':
             gameContentElem.classList.remove('hidden');
             nextButton.classList.remove('hidden');
-            stopBgMusic(); // Stop music on game over
+            stopBgMusic();
 
             await typeText(gameTitleElem, titleText, 50);
 
@@ -590,7 +553,6 @@ async function displayPage(pageId) {
             gameOverMessage += `<br>Final Crew Morale: ${gameState.crewHealth}`;
             gameOverMessage += `<br>Final Treasure: ${gameState.treasure} credits`;
 
-            gameContentElem.setAttribute('data-full-text', gameOverMessage);
             await typeText(gameContentElem, gameOverMessage, 30);
 
             nextButton.textContent = "Restart Game";
@@ -600,49 +562,43 @@ async function displayPage(pageId) {
         default:
             gameContentElem.classList.remove('hidden');
             await typeText(gameTitleElem, titleText, 50);
-            gameContentElem.setAttribute('data-full-text', "An unknown game state occurred.");
             await typeText(gameContentElem, "An unknown game state occurred.", 30);
             break;
     }
 }
 
-// --- Event Handlers ---
 nextButton.addEventListener('click', (e) => {
     e.stopPropagation();
 
     playSfx(sfxButtonClick);
 
-    // If typing is active, skip it
     if (isTypingActive && currentTypingResolve) {
         handleGlobalInteractionToSkip(e);
         return;
     }
 
     if (gameState.currentPage === 'splashScreen') {
-        playBgMusic(); // Start background music after splash
+        playBgMusic();
     }
 
-    // Handles restart from game over/conclusion
     if (gameState.currentPage === 'gameOver' || gameState.currentPage === 'conclusion') {
-        // Reset game state to initial values
         gameState = {
             currentPage: 'splashScreen',
             shipHealth: 100,
             crewHealth: 100,
             treasure: 0,
             currentAct: 0,
-            currentEncounterId: null, // Reset to null as we're going back to splash
+            currentEncounterId: null,
             lastChoiceOutcome: null,
             rivalFactionEncountered: false,
-            shipShieldBoostActive: false, // Reset this flag too
-            specialEffects: [], // Reset this array
+            shipShieldBoostActive: false,
+            specialEffects: [],
             gameOverReason: null
         };
         displayPage(gameState.currentPage);
         return;
     }
 
-    // --- Page Progression Logic ---
     switch (gameState.currentPage) {
         case 'splashScreen':
             gameState.currentPage = 'introGame';
@@ -651,24 +607,21 @@ nextButton.addEventListener('click', (e) => {
             gameState.currentPage = 'introCrewDynamics';
             break;
         case 'introCrewDynamics':
-            // Start character intros from the first character (currentEncounter as a character index)
-            gameState.currentEncounter = 1; // 1-indexed for character intros
+            gameState.currentEncounter = 1;
             gameState.currentPage = 'characterIntro';
             break;
         case 'characterIntro':
-            gameState.currentEncounter++; // Move to next character
-            // Check if all characters have been introduced
+            gameState.currentEncounter++;
             if (gameState.currentEncounter > Object.keys(gameData.characters).length) {
-                gameState.currentPage = 'missionBrief'; // All characters done, move to mission brief
-                gameState.currentEncounter = 0; // Reset for actual encounter tracking
+                gameState.currentPage = 'missionBrief';
+                gameState.currentEncounter = 0;
             }
             break;
         case 'missionBrief':
-            gameState.currentAct = 0; // Start at the first act (index 0)
-            // Set the current encounter ID to the first encounter of the first act
+            gameState.currentAct = 0;
             if (gameData.acts[0] && gameData.acts[0].encounters[0]) {
                 gameState.currentEncounterId = gameData.acts[0].encounters[0].id;
-                gameState.currentPage = 'actTitle'; // Go to act title screen first
+                gameState.currentPage = 'actTitle';
             } else {
                 console.error("No first act or encounter to start the game!");
                 endGame("error");
@@ -676,20 +629,15 @@ nextButton.addEventListener('click', (e) => {
             }
             break;
         case 'actTitle':
-            gameState.currentPage = 'encounter'; // After act title, go to the first encounter of that act
+            gameState.currentPage = 'encounter';
             break;
 
-        // --- MODIFIED LOGIC FOR 'results' PAGE TRANSITION ---
         case 'results':
-            // After displaying results, determine the next step based on the outcome's nextId.
-            // gameState.currentEncounterId was already set by handleChoice to the intended next encounter ID.
             const targetEncounterId = gameState.currentEncounterId;
 
             if (targetEncounterId === null) {
-                // If nextId was null, it means the game should conclude
                 gameState.currentPage = 'conclusion';
             } else {
-                // Find which act this targetEncounterId belongs to
                 let newActIndex = -1;
                 for (let i = 0; i < gameData.acts.length; i++) {
                     if (gameData.acts[i].encounters.some(enc => enc.id === targetEncounterId)) {
@@ -700,45 +648,36 @@ nextButton.addEventListener('click', (e) => {
 
                 if (newActIndex === -1) {
                     console.error(`Outcome.nextId "${targetEncounterId}" does not point to a valid encounter.`);
-                    endGame("error"); // Critical error: invalid nextId
+                    endGame("error");
                     return;
                 }
 
-                // Check if the target is the first encounter of a *new* act
                 const isFirstEncounterOfNewAct = (newActIndex > gameState.currentAct) &&
                                                 gameData.acts[newActIndex] &&
                                                 gameData.acts[newActIndex].encounters.length > 0 &&
                                                 gameData.acts[newActIndex].encounters[0].id === targetEncounterId;
 
                 if (isFirstEncounterOfNewAct) {
-                    // It's the end of the current act, show summary for the current act
                     gameState.currentPage = 'actSummary';
-                    // gameState.currentAct is already set to the *previous* act for the summary display
-                    // It will be incremented AFTER the summary page is displayed
                 } else {
-                    // It's an encounter within the current act or a jump to an encounter in a previous act
                     gameState.currentPage = 'encounter';
-                    gameState.currentAct = newActIndex; // Update currentAct if the next encounter is in a different act
-                    // gameState.currentEncounterId is already set to targetEncounterId
+                    gameState.currentAct = newActIndex;
                 }
             }
             break;
-        // --- END MODIFIED LOGIC ---
 
         case 'actSummary':
-            gameState.currentAct++; // Move to the next act index
+            gameState.currentAct++;
             if (gameState.currentAct < gameData.acts.length) {
-                // If there's a next act, set the currentEncounterId to its first encounter
                 if (gameData.acts[gameState.currentAct] && gameData.acts[gameState.currentAct].encounters[0]) {
                     gameState.currentEncounterId = gameData.acts[gameState.currentAct].encounters[0].id;
-                    gameState.currentPage = 'actTitle'; // Show the next act's title screen
+                    gameState.currentPage = 'actTitle';
                 } else {
                     console.error(`Act ${gameState.currentAct} has no encounters defined!`);
                     endGame("error");
                     return;
                 }
             } else {
-                // All acts completed, move to the conclusion
                 gameState.currentPage = 'conclusion';
             }
             break;
@@ -746,32 +685,24 @@ nextButton.addEventListener('click', (e) => {
     displayPage(gameState.currentPage);
 });
 
-/**
- * Handles a player's choice by applying the outcome and navigating to the next page.
- * This is the central function for branching.
- * @param {object} outcome - The outcome object from the chosen option in encounters.json.
- */
 function handleChoice(outcome) {
     playSfx(sfxButtonClick);
-    gameState.lastChoiceOutcome = outcome; // Store the outcome for the 'results' page display
+    gameState.lastChoiceOutcome = outcome;
 
-    // Apply health and treasure changes
     gameState.shipHealth += outcome.shipHealthChange || 0;
     gameState.crewHealth += outcome.crewHealthChange || 0;
     gameState.treasure += outcome.treasureChange || 0;
 
-    // Clamp health values
     gameState.shipHealth = Math.max(0, gameState.shipHealth);
     gameState.crewHealth = Math.max(0, gameState.crewHealth);
 
-    // Apply special effects based on the outcome
     if (outcome.specialEffect) {
         if (outcome.specialEffect === "rivalFactionEncountered") {
             gameState.rivalFactionEncountered = true;
         } else if (outcome.specialEffect === "shipShieldBoost") {
             gameState.shipShieldBoostActive = true;
         } else if (outcome.specialEffect === "temporaryShieldBoost") {
-            console.log("Temporary Shield Boost acquired!"); // Example, actual temp effect logic needed
+            console.log("Temporary Shield Boost acquired!");
         }
         else {
             if (!gameState.specialEffects.includes(outcome.specialEffect)) {
@@ -781,7 +712,6 @@ function handleChoice(outcome) {
         console.log("Applied special effect:", outcome.specialEffect);
     }
 
-    // Check for game over conditions immediately after applying outcome
     if (gameState.shipHealth <= 0) {
         gameState.gameOverReason = 'shipDestroyed';
         gameState.currentPage = 'gameOver';
@@ -795,40 +725,29 @@ function handleChoice(outcome) {
         return;
     }
 
-    // --- MODIFIED LOGIC FOR handleChoice: Always go to 'results' first ---
-    // Store the nextId in gameState.currentEncounterId for the nextButton to process.
-    // The determination of 'actSummary' vs 'encounter' will now happen in nextButton.
     gameState.currentEncounterId = outcome.nextId;
 
     if (outcome.nextId === null) {
-        // If the outcome explicitly ends the game path
         gameState.currentPage = 'conclusion';
     } else {
-        // Otherwise, always go to the 'results' page first to show the outcome text
         gameState.currentPage = 'results';
     }
     displayPage(gameState.currentPage);
-    // --- END MODIFIED LOGIC ---
 }
 
-// --- Global Event Listeners ---
 document.addEventListener('click', handleGlobalInteractionToSkip);
 document.addEventListener('keydown', handleGlobalInteractionToSkip);
 
-// --- Initialization ---
 async function initializeGame() {
-    displayPage('loading'); // Show loading screen
+    displayPage('loading');
 
     try {
-        // Fetch characters data
         const charactersResponse = await fetch('data/characters.json');
         const charactersData = await charactersResponse.json();
 
-        // Fetch encounters data (acts)
         const encountersResponse = await fetch('data/encounters.json');
         const actsData = await encountersResponse.json();
 
-        // Build a lookup table for encounters by ID for quick access
         const encounterLookup = {};
         actsData.forEach(act => {
             act.encounters.forEach(encounter => {
@@ -839,18 +758,16 @@ async function initializeGame() {
             });
         });
 
-        // Populate gameData object
         gameData = {
-            ...staticGameNarrative, // Include your static narrative pieces
+            ...staticGameNarrative,
             characters: charactersData,
-            acts: actsData, // Keep the structured acts array for act titles/summaries
-            encounterLookup: encounterLookup // The new lookup table for direct ID access
+            acts: actsData,
+            encounterLookup: encounterLookup
         };
 
         console.log("Game data loaded successfully:", gameData);
-        console.log("Encounter Lookup Table:", gameData.encounterLookup); // Verify in console
+        console.log("Encounter Lookup Table:", gameData.encounterLookup);
 
-        // Set initial game state and display splash screen
         gameState.currentPage = 'splashScreen';
         displayPage(gameState.currentPage);
 
@@ -863,13 +780,10 @@ async function initializeGame() {
     }
 }
 
-// Function to handle critical errors that halt the game
 function endGame(reason = "unknown") {
     gameState.gameOverReason = reason;
     gameState.currentPage = 'gameOver';
     displayPage(gameState.currentPage);
 }
 
-
-// Start the game initialization when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', initializeGame);
