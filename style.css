@@ -26,6 +26,8 @@ body {
 }
 
 #game-container {
+    position: relative;
+    padding-bottom: 120px;
     background-color: rgba(0, 0, 0, 0.7); /* Slightly transparent dark background for readability */
     border: 2px solid #00ff00; /* Green border */
     box-shadow: 0 0 15px rgba(0, 255, 0, 0.7); /* Green glow effect */
@@ -40,6 +42,17 @@ body {
     height: 80vh; /* You can adjust this value (e.g., 70vh, 90vh) */
     overflow-y: auto;
     -webkit-overflow-scrolling: touch; /* Optional: for smoother scrolling on touch devices */
+    {
+    /* ... (your existing properties like position: relative; min-height; display; flex-direction;) ... */
+
+    width: 90%; /* Or a specific width like 1000px if you prefer a fixed width */
+    max-width: 1200px; /* Set a maximum width for larger screens */
+    margin: 0 auto; /* This is the key to centering the #game-container itself */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.7); /* Example: add a shadow to the container */
+    background-color: #1a1a2e; /* Example: a background color for the main game area */
+    border-radius: 15px; /* Example: rounded corners for the container */
+    overflow: hidden; /* Important if content inside can overflow */
+}
 }
 
 #game-title {
@@ -129,15 +142,117 @@ body {
 }
 
 #status-display {
-    text-align: left;
-    font-size: 0.9em;
-    color: #99ff99;
-    border-top: 1px dashed #00cc00;
-    padding-top: 15px;
-    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    /*width: 100%;
+    max-width: 800px;
+    /* Remove margin: auto, as absolute positioning handles centering */
+    padding: 15px 15px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 12px;
+    border: 1px solid #444;
+    z-index: 10; /* Ensure it stays on top of other content */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+    transition: opacity 0.5s ease-in-out;
+}
+.stat-item {
+    text-align: center; /* Center text within each individual stat block */
+    color: #fff; /* White text for good contrast */
+    font-size: 1.3em; /* Increase the base font size for stat items */
+    display: flex; /* Use flex for label and value/indicator within the item */
+    flex-direction: column; /* Stack label and value/indicator vertically */
+    align-items: center; /* Center content horizontally within the item */
+    gap: 0px; /* Small space between label and value */
+    padding: 0 10px; /* Add horizontal padding for spacing between items */
+    min-width: 40px; /* Ensure a minimum width for each stat item */
+}
+.stat-label {
+    font-weight: normal; /* Keep labels slightly less bold */
+    color: #b0b0b0; /* A lighter grey for labels */
+    font-size: 0.5em; /* Make label text slightly smaller than the main stat value */
+    letter-spacing: 0.05em; /* Slightly space out letters for labels */
+    text-transform: uppercase; /* Make labels uppercase for clear identification */
 }
 
 /* Utility class for hiding elements */
 .hidden {
     display: none !important;
+}
+/* --- Stat Change Indicators --- */
+
+/* Base class for the stat value that will animate */
+.stat-value {
+    font-size: 1em; /* Significantly increase the size of the numeric value */
+    font-weight: bold;
+    color: #fff; /* Keep values bright white */
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.7); /* Add a subtle glow to the numbers */
+    position: relative; /* CRUCIAL: Make this the positioning context for .stat-indicator */
+    display: inline-block; /* Ensures position:relative works correctly with width/height */
+    vertical-align: middle; /* Helps align with other inline content if any */
+}
+
+/* Styles for when a stat increases */
+.stat-value.gain {
+    color: var(--green-color); /* A vibrant green for gains */
+    animation: stat-flash-green 0.6s ease-out; /* Apply flash animation */
+}
+
+/* Styles for when a stat decreases */
+.stat-value.loss {
+    color: var(--red-color); /* A vibrant red for losses */
+    animation: stat-flash-red 0.6s ease-out; /* Apply flash animation */
+}
+
+/* Keyframes for the green flash animation */
+@keyframes stat-flash-green {
+    0% { color: var(--green-color); transform: scale(1.1); }
+    50% { color: var(--text-color); transform: scale(1.0); } /* Revert to normal text color */
+    100% { color: var(--text-color); }
+}
+
+/* Keyframes for the red flash animation */
+@keyframes stat-flash-red {
+    0% { color: var(--red-color); transform: scale(1.1); }
+    50% { color: var(--text-color); transform: scale(1.0); } /* Revert to normal text color */
+    100% { color: var(--text-color); }
+}
+
+/* Styles for the +/- value pop-up */
+.stat-indicator {
+    font-size: 0.6em; /* Smaller relative to the main number */
+    font-weight: bold;
+    position: absolute; /* Position absolutely within .stat-value */
+    top: -5px; /* Start slightly above the top edge of the number */
+    right: -10px; /* Start slightly to the right of the number */
+    opacity: 0; /* Initially invisible */
+    transform: translateY(10px); /* Start 10px below its final visible position */
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out, color 0.3s ease; /* Add color transition */
+    white-space: nowrap; /* Prevent wrapping if text is long */
+}
+
+.stat-indicator.show {
+    opacity: 1;
+    transform: translateY(0); /* Move to its final (0px translateY) position */
+}
+
+.stat-indicator.gain {
+    color: #8aff8a; /* Bright green for gains */
+}
+
+.stat-indicator.loss {
+    color: #ff8a8a; /* Bright red for losses */
+}
+
+/* Define custom properties for colors if you haven't already */
+:root {
+    --primary-color: #4CAF50; /* Example button color */
+    --background-color: #1a1a2e; /* Dark background */
+    --text-color: #e0e0e0; /* Light text */
+    --button-bg-color: #3f51b5; /* Blue button */
+    --button-hover-color: #5c6bc0;
+    --panel-bg-color: #2e2e4e; /* Slightly lighter panel */
+    --red-color: #e57373; /* Example red */
+    --green-color: #81c784; /* Example green */
+    --accent-color: #ffee58; /* Example accent */
 }

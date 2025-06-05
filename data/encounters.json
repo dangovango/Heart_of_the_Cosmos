@@ -1,7 +1,7 @@
 [
     {
         "title": "Act 1: The Nebula's Embrace",
-        "actDescription": "The journey begins! Your crew plunges into the mysterious Nebula's Embrace, where strange energy and desperate calls await. Press continue to face your first encounter...",
+        "actDescription": "Your vessel pierces the mysterious Nebula's Embrace. Strange energy readings and faint distress calls hint at what awaits. The journey begins.",
         "encounters": [
             {
                 "id": "act1_enc1",
@@ -359,11 +359,11 @@
                 ]
             }
         ],
-        "summary": "Act 1 Summary: Your journey through the Nebula's Embrace has tested your crew's resolve. You've encountered abandoned vessels, answered distress calls, and navigated spatial anomalies. The path ahead remains uncertain, but your crew stands ready for whatever comes next."
+        "summary": "You've navigated the Nebula's perplexing fringes, mastering its unexpected encounters. This was a prelude. Now, prepare for the desolate Whispering Wastes, a realm of cosmic anomalies and moral dilemmas."
     },
     {
         "title": "Act 2: The Whispering Wastes",
-        "actDescription": "Ahead lies the treacherous Whispering Wastes, a desolate expanse filled with cosmic threats and moral dilemmas. Press continue to navigate this dangerous sector...",
+        "actDescription": "You emerge into the Whispering Wastes, a desolate expanse. Ancient anomalies twist reality, and cunning foes guard paths to the Gem. Brace yourselves.",
         "encounters": [
             {
                 "id": "act2_enc1",
@@ -727,11 +727,11 @@
                 ]
             }
         ],
-        "summary": "Act 2 Summary: The Whispering Wastes proved to be a challenging expanse, pushing your crew's limits. You've navigated asteroid fields, dealt with cosmic threats, and faced moral dilemmas. The Star-Heart Gem feels closer, but the stakes are rising."
+        "summary": "The Whispering Wastes tested your limits. You've overcome its perils and dilemmas, drawing closer to the Gem. Your final challenge awaits in the Heart of the Nebula, home to its ultimate guardians."
     },
     {
         "title": "Act 3: Heart of the Nebula",
-        "actDescription": "You've reached the final frontier! The Star-Heart Gem is within your grasp, but a formidable challenge awaits as you continue deep into the void. Press continue to face your ultimate trial...",
+        "actDescription": "You've reached the Heart of the Nebula, source of the Star-Heart Gem's power. Ancient guardians stand between you and your prize. This is your ultimate trial.",
         "encounters": [
             {
                 "id": "act3_enc_nebula_heart",
@@ -1110,6 +1110,6 @@
                 ]
             }
         ],
-        "summary": "Act 3 Summary: The Heart of the Nebula pushed your crew to their absolute limits. You faced ancient defenses, confronted formidable guardians, and made a desperate escape. The fate of your mission, and your crew, now hangs in the balance."
+        "summary": "The Heart of the Nebula demanded everything. You've faced its defenses and guardians, securing the Gem. Your epic odyssey is complete. Your legend, and your crew's fate, is now etched into the stars."
     }
 ]

@@ -1,40 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Heart of the Cosmos</title>
-    
+
     <link rel="stylesheet" href="style.css">
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
     <div id="game-container">
         <h1 id="game-title" class="hidden"></h1>
         <h2 id="game-subtitle" class="hidden"></h2>
         <img id="splash-image" src="" alt="Game Splash Screen" class="hidden">
-        
+
         <img id="character-portrait" class="hidden" alt="Character Portrait">
 
         <img id="encounter-image" class="hidden" alt="Encounter Image">
 
         <p id="game-content" class="hidden"></p>
-        
+
         <div id="choices-container" class="hidden">
-            </div>
+        </div>
 
         <div id="status-display" class="hidden">
+            <div class="stat-item">
+                <span id="shipHealth" class="stat-value">100<span class="stat-indicator"></span></span>
+                <span class="stat-label">Ship Health</span>
             </div>
+            <div class="stat-item">
+                <span id="crewHealth" class="stat-value">100<span class="stat-indicator"></span></span>
+                <span class="stat-label">Crew Morale</span>
+            </div>
+            <div class="stat-item">
+                <span id="treasure" class="stat-value">0<span class="stat-indicator"></span></span>
+                <span class="stat-label">Treasure Credits</span>
+            </div>
+        </div>
 
         <button id="next-button" class="game-button hidden">Continue</button>
     </div>
 
     <audio id="bg-music" src="assets/audio/background_music.mp3" loop preload="auto"></audio>
     <audio id="sfx-button-click" src="assets/audio/button_click.wav" preload="auto"></audio>
-    <audio id="sfx-typing" src="assets/audio/typing_sound.mp3" preload="auto"></audio> 
+    <audio id="sfx-typing" src="assets/audio/typing_sound.mp3" preload="auto"></audio>
 
-    <script src="game.js" type="module"></script> 
+    <script src="game.js"></script>
 </body>
+
 </html>
