@@ -1,7 +1,7 @@
 [
     {
         "title": "Act 1: The Nebula's Embrace",
-        "actDescription": "Your vessel pierces the mysterious Nebula's Embrace. Strange energy readings and faint distress calls hint at what awaits. The journey begins.",
+        "actDescription": "Your vessel pierces the mysterious Nebula's Embrace. Strange energy readings and faint distress calls hint at what awaits. The journey begins.<br><br>Remember to:<br>- Discuss the situation<br>- Debate the options<br>- Decide on the best course of action",
         "encounters": [
             {
                 "id": "act1_enc1",
@@ -22,7 +22,7 @@
                         }
                     },
                     {
-                        "text": "Have Jax rig a powerful, localized energy burst to destabilize the organism's defenses and clear a path.",
+                        "text": "Have Jax rig a powerful, localized energy burst to neutralize the organism's defenses and clear a path.",
                         "outcome": {
                             "image": "outcome/act1_enc1_outcome2.png",
                             "text": "Jax deploys a makeshift energy pulse. The organism shudders violently, cracking its outer shell, but a burst of uncontrolled energy damages your ship's hull. The path is cleared, but at a cost.",
@@ -36,7 +36,7 @@
                         "text": "Have Dr. Aris investigate the source of the unique energy signature emanating from the organism.",
                         "outcome": {
                             "image": "outcome/act1_enc1_outcome3.png",
-                            "text": "Dr. Aris carefully scans the crystalline structure, identifying a rare energy resonance. While the organism remains unstable, the data gathered is invaluable, leading you towards a mysterious anomaly in the distance.",
+                            "text": "Dr. Aris carefully scans the crystalline structure, identifying a rare energy resonance. While the organism remains unstable. The scan, however, picks up a stray signal, leading you towards a mysterious anomaly in the distance.",
                             "shipHealthChange": 0,
                             "treasureChange": 0,
                             "crewHealthChange": 0,
@@ -49,13 +49,13 @@
                 "id": "act1_enc2",
                 "displayName": "Stranded Shuttle",
                 "image": "encounters/act1_enc2.png",
-                "scenario": "A small, dilapidated shuttle hails you, its pilot pleading for urgent medical supplies. They claim their crew is suffering from a violent space plague, and they're stranded. Your medical bay has limited supplies, but helping them could deplete your own reserves.",
+                "scenario": "You safely bypass the crystalline organism unnoticed by the massive creature and continue on your way through the nebula. A small, dilapidated shuttle hails you, its pilot pleading for urgent medical supplies. They claim their crew is suffering from a violent space plague, and they're stranded. Your medical bay has limited supplies, but helping them could deplete your own reserves.",
                 "options": [
                     {
                         "text": "Dock with the shuttle and have Dr. Aris assess the situation and offer medical aid.",
                         "outcome": {
                             "image": "outcome/act1_enc2_outcome1.png",
-                            "text": "Dr. Aris cautiously boards the shuttle, quickly diagnosing a non-contagious but debilitating foodborne illness, not a plague. Your timely intervention saves their crew. In gratitude, they share detailed charts of safe shortcuts through the nebula and a small cache of rare alien herbs worth 75 credits.",
+                            "text": "Dr. Aris cautiously boards the shuttle, quickly diagnosing a non-contagious but debilitating foodborne illness, not a plague. Your timely intervention saves their crew. In gratitude, they share detailed charts of safe shortcuts through the nebula, perhaps getting you closer to the Star-Heart Gem sooner, and a small cache of rare alien herbs worth 75 credits.",
                             "shipHealthChange": 0,
                             "treasureChange": 75,
                             "crewHealthChange": 0,
@@ -92,13 +92,13 @@
                 "id": "act1_enc_ancient_derelict",
                 "displayName": "Ancient Derelict Ship",
                 "image": "encounters/act1_enc_ancient_derelict.png",
-                "scenario": "Following Jax's energy disruption, your scans reveal a previously cloaked ancient derelict vessel, seemingly powered by similar crystalline organisms. It's a risk to board, but untold secrets (and perhaps treasure) could lie within.",
+                "scenario": "Following Jax's energy disruption, your scans reveal a previously cloaked ancient derelict vessel, seemingly powered by similar crystalline organisms. It's a risk to board, but untold secrets and perhaps treasure could lie within.",
                 "options": [
                     {
                         "text": "Send a team to cautiously explore the derelict.",
                         "outcome": {
                             "image": "outcome/act1_enc_ancient_derelict_outcome1.png",
-                            "text": "Your team navigates the eerie silence of the derelict. They find a vast library of corrupted data files and a small stash of valuable alien tech worth 150 credits. However, a sudden power surge from the derelict drains some of your ship's auxiliary power.",
+                            "text": "Your team navigates the eerie silence of the derelict. They find a vast library of corrupted data files and a small stash of valuable alien tech worth 150 credits. However, a sudden power surge from the derelict drains some of your ship's auxiliary power, leaving your crew navigating through the darkness.",
                             "shipHealthChange": -5,
                             "treasureChange": 150,
                             "crewHealthChange": 0,
@@ -165,7 +165,7 @@
                 "id": "act1_enc_abandoned_mining_station",
                 "displayName": "Abandoned Mining Station",
                 "image": "encounters/act1_enc_abandoned_mining_station.png",
-                "scenario": "You drift past an old, abandoned mining station. Its lights flicker intermittently, and automated drones still patrol its decaying exterior. There's a chance of valuable ore left behind, but also unknown dangers.",
+                "scenario": "As you continue to drift from your experience in the anomaly, an old, abandoned mining station appears on the horizon. Its lights flicker intermittently, automated drones still patrol its decaying exterior. There's a chance of valuable ore left behind, but also unknown dangers.",
                 "options": [
                     {
                         "text": "Send a team to salvage what materials they can from the station's exterior.",
@@ -206,7 +206,7 @@
                 "id": "act1_enc_energy_flare",
                 "displayName": "Unstable Energy Flare",
                 "image": "encounters/act1_enc_energy_flare.png",
-                "scenario": "A massive energy flare erupts ahead, bathing everything in an intense, purple light. Your sensors indicate dangerous radiation levels. You need to act fast to avoid significant damage.",
+                "scenario": "As the abandoned and forgotten shell of once-was vanishes in the distance behind you, a massive energy flare erupts ahead, bathing everything in an intense, purple light. Your sensors indicate dangerous radiation levels. You need to act fast to avoid significant damage.",
                 "options": [
                     {
                         "text": "Fire emergency deflectors and try to push through.",
@@ -248,13 +248,13 @@
                 "id": "act1_enc_smugglers_den",
                 "displayName": "Smugglers' Den",
                 "image": "encounters/act1_enc_smugglers_den.png",
-                "scenario": "You arrive at a hidden smuggler's den, a chaotic nexus of illicit trade and dubious characters. Opportunities for profit, or trouble, abound.",
+                "scenario": "As your eyes adjust from the events before, you arrive at a hidden smuggler's den, a chaotic nexus of illicit trade and dubious characters. Opportunities for profit, or trouble, abound.",
                 "options": [
                     {
-                        "text": "Attempt to trade for rare components. (Requires 50 credits)",
+                        "text": "Attempt to trade for rare components with what treasure you have.",
                         "outcome": {
                             "image": "outcome/act1_enc_smugglers_den_outcome1.png",
-                            "text": "You exchange 50 credits for some illicitly acquired, but remarkably effective, ship components. Your ship's hull strength is improved.",
+                            "text": "You exchange 50 credits worth of treasure for some illicitly acquired, but remarkably effective, ship components. Your ship's hull strength is improved.",
                             "shipHealthChange": 10,
                             "treasureChange": -50,
                             "crewHealthChange": 0,
@@ -267,7 +267,7 @@
                         }
                     },
                     {
-                        "text": "Attempt to trade for rare components (Not enough credits).",
+                        "text": "Attempt to barter for rare components with what treasure you have.", 
                         "outcome": {
                             "image": "outcome/act1_enc_smugglers_den_outcome_fail_trade.png",
                             "text": "You attempt to trade, but the smugglers scoff at your meager funds. You leave empty-handed.",
@@ -332,7 +332,7 @@
                 "id": "act1_enc3",
                 "displayName": "Faint Energy Signal",
                 "image": "encounters/act1_enc3.png",
-                "scenario": "Your long-range sensors detect a faint energy signature – too structured to be natural. Captain Eva believes it might be a hidden, automated defense system or a long-lost cache, containing salvagable components, emitting a repeating, cryptic signal.",
+                "scenario": "Your long-range sensors detect a faint energy signature – too structured to be natural. Captain Eva believes it might be a hidden, automated defense system or a long-lost cache, containing salvageable components, emitting a repeating, cryptic signal.",
                 "options": [
                     {
                         "text": "Send a small away team (Eva and Aris) to investigate the source of the signal directly.",
@@ -1113,3 +1113,6 @@
         "summary": "The Heart of the Nebula demanded everything. You've faced its defenses and guardians, securing the Gem. Your epic odyssey is complete. Your legend, and your crew's fate, is now etched into the stars."
     }
 ]
+
+
+

@@ -195,13 +195,13 @@ body {
 /* Styles for when a stat increases */
 .stat-value.gain {
     color: var(--green-color); /* A vibrant green for gains */
-    animation: stat-flash-green 0.6s ease-out; /* Apply flash animation */
+    animation: stat-flash-green 5s ease-out; /* Apply flash animation */
 }
 
 /* Styles for when a stat decreases */
 .stat-value.loss {
     color: var(--red-color); /* A vibrant red for losses */
-    animation: stat-flash-red 0.6s ease-out; /* Apply flash animation */
+    animation: stat-flash-red 5s ease-out; /* Apply flash animation */
 }
 
 /* Keyframes for the green flash animation */
