@@ -337,7 +337,7 @@
                             "treasureChange": 100,
                             "crewHealthChange": 0,
                             "specialEffect": "scientificDataAcquired",
-                            "nextId": "act1_summary_transition"
+                            "nextId": "act2_enc1"
                         }
                     },
                     {
@@ -349,7 +349,7 @@
                             "treasureChange": 0,
                             "crewHealthChange": 0,
                             "specialEffect": "arisAnalyticalInsight",
-                            "nextId": "act1_summary_transition"
+                            "nextId": "act2_enc1"
                         }
                     }
                 ]
