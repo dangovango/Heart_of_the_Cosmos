@@ -256,3 +256,39 @@ body {
     --green-color: #81c784; /* Example green */
     --accent-color: #ffee58; /* Example accent */
 }
+/* --- Act Progress Bar --- */
+#act-progress-bar {
+    position: absolute;
+    top: 10px; /* Adjust if it clashes with your game title or the act-indicator */
+    left: 50%;
+    transform: translateX(-50%); /* Centers the bar horizontally */
+    width: 80%; /* Takes up 80% of game-container width */
+    max-width: 600px; /* Limits its maximum width on very large screens */
+    display: flex; /* Uses Flexbox to arrange items horizontally */
+    justify-content: space-around; /* Distributes items with space between them */
+    align-items: center; /* Vertically centers items */
+    background-color: rgba(0, 0, 0, 0.4); /* Subtle dark background */
+    padding: 10px 20px; /* Vertical and horizontal padding */
+    border-radius: 10px;
+    z-index: 15; /* Ensure it's above content but below the act-indicator if needed */
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.2); /* A subtle glow */
+}
+
+.act-progress-item {
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-align: center;
+    flex: 1; /* Allows each item to take up equal available space */
+    transition: color 0.5s ease-in-out, text-shadow 0.5s ease-in-out; /* Smooth transition for brightness changes */
+    
+    /* Dim state (default) */
+    color: rgba(255, 255, 255, 0.3); /* Very dim white */
+    text-shadow: none; /* No shadow by default */
+}
+
+.act-progress-item.bright-act {
+    /* Bright state for current and previous acts */
+    color: #fff; /* Bright white */
+    text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 15px #0ff; /* Glowing effect */
+}

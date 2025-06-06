@@ -1,15 +1,15 @@
 let gameData = {};
 const staticGameNarrative = {
     splashScreen: {
-        title: "Heart of the Cosmos",
+        title: " ",
         subtitle: "Treasure hidden in the void",
         image: "splash_screen_cover.png"
     },
     introGame: {
-        text: "Welcome, brave spacefarers! Across the cosmos, legends whisper of the Star-Heart Gem, a treasure beyond imagination hidden deep within the treacherous Cygnus Nebula. You are the Captain of a renowned crew, charting a course toward this fabled prize. But be warned: every decision you make will echo through the void. Prepare for adventure, danger, and glory!"
+        text: "Welcome, brave spacefarers! Across the cosmos, legends whisper of the STAR-HEART GEM, a treasure beyond imagination hidden deep within the treacherous Cygnus Nebula. You are the Captain of a renowned crew, charting a course toward this fabled prize. But be warned: every decision you make will echo through the void. Prepare for adventure, danger, and glory!"
     },
     introCrewDynamics: {
-        text: "Your crew is your greatest asset: a diverse team, each member bringing unique skills, experiences, and perspectives to the table. As you face the cosmos' trials, their strengths will be tested, and your bonds forged in the fires of space. Your survival and success depend on your collective wisdom. Before every critical choice, engage with your crew: discuss the situation, debate the options, and collaboratively decide on the best course of action. Your unity is your power."
+        text: "Your crew is your greatest asset: a diverse team, each member bringing unique skills, experiences, and perspectives to the table. As you face the cosmos' trials, their strengths will be tested, and your bonds forged in the fires of space. Your survival and success depend on your collective wisdom.<br><br>Before every critical choice, engage with your crew: discuss the situation, debate the options, and collaboratively decide on the best course of action. Your unity is your power."
     },
     missionBrief: {
         text: "The coordinates are set. Your mission: penetrate the treacherous Cygnus Nebula and locate the fabled Star-Heart Gem. This perilous quest demands more than just courage; it demands cunning, foresight, and a united front.<br><br>At each encounter, you will face critical decisions. Remember to first assess the situation and understand the challenges. Then, consult your crew, leveraging their unique insights through discussion. Finally, make your collective decision, as every choice has a profound impact on your ship, your crew, and your ultimate success.<br><br>Your ultimate objective is clear: Secure the Star-Heart Gem, preserve your crew, and return a legend!"
@@ -54,6 +54,17 @@ const statusDisplayElem = document.getElementById('status-display');
 const nextButton = document.getElementById('next-button');
 const splashImageElem = document.getElementById('splash-image');
 
+// Act Indicator DOM element (will be permanently hidden)
+const actIndicatorElem = document.getElementById('act-indicator'); 
+
+// Act Progress Bar DOM elements (will be managed dynamically)
+const actProgressBarElem = document.getElementById('act-progress-bar');
+const actProgressItems = [ // Array to easily access each act span
+    document.getElementById('act-progress-1'),
+    document.getElementById('act-progress-2'),
+    document.getElementById('act-progress-3')
+];
+
 const bgMusic = document.getElementById('bg-music');
 const sfxButtonClick = document.getElementById('sfx-button-click');
 const sfxTyping = document.getElementById('sfx-typing');
@@ -71,16 +82,16 @@ function getPageTitle(pageId) {
         if (pageId === 'newActTitle' && gameData.acts && gameData.acts[gameState.currentAct]) {
             return gameData.acts[gameState.currentAct].title; // Title of the new act
         }
-        return pageTitles[pageId];
+        return pageTitles[pageId]; // This returns "Encounter Results" for pageId 'results'
     }
     if (pageId === 'splashScreen') {
         return staticGameNarrative.splashScreen.title;
     }
     if (pageId === 'encounter' && gameData.acts && gameData.acts[gameState.currentAct] && gameState.currentEncounterId) {
-        const currentAct = gameData.acts[gameState.currentAct];
+        // MODIFIED: This line now only returns the encounter's display name
         const currentEncounter = gameData.encounterLookup[gameState.currentEncounterId];
-        if (currentEncounter && currentAct) {
-            return `${currentAct.title.split(':')[0]}: ${currentEncounter.displayName}`;
+        if (currentEncounter) {
+            return currentEncounter.displayName; 
         }
     }
     if (pageId === 'characterIntro' && gameData.characters) {
@@ -148,30 +159,30 @@ function updateStatusDisplay() {
 }
 
 function animateStatChange(statElementId, changeAmount) {
-    const statElement = document.getElementById(statElementId);
+    const statElement = document.getElementById(statElementId); // This is the <span> with id 'shipHealth', 'crewHealth', or 'treasure'
     if (!statElement) {
         console.error(`Stat element with ID '${statElementId}' not found.`);
         return;
     }
 
-    const statValueSpan = statElement;
-    const statIndicatorSpan = statElement.querySelector('.stat-indicator');
+    // MODIFIED: Find the .stat-indicator span as a CHILD of the statElement
+    const statIndicatorSpan = statElement.querySelector('.stat-indicator'); 
 
-    if (!statValueSpan || !statIndicatorSpan) {
-        console.error(`Could not find .stat-value or .stat-indicator within #${statElementId}. Check your index.html structure.`);
+    if (!statIndicatorSpan) { // Removed statValueSpan check, as statElement is already statValueSpan
+        console.error(`Could not find .stat-indicator span inside #${statElementId}. Check your index.html structure.`);
         return;
     }
 
-    statValueSpan.classList.remove('gain', 'loss');
+    statElement.classList.remove('gain', 'loss'); // Apply to the main stat span
     statIndicatorSpan.classList.remove('show', 'gain', 'loss');
     statIndicatorSpan.textContent = '';
 
     if (changeAmount > 0) {
-        statValueSpan.classList.add('gain');
+        statElement.classList.add('gain');
         statIndicatorSpan.classList.add('gain');
         statIndicatorSpan.textContent = `+${changeAmount}`;
     } else if (changeAmount < 0) {
-        statValueSpan.classList.add('loss');
+        statElement.classList.add('loss');
         statIndicatorSpan.classList.add('loss');
         statIndicatorSpan.textContent = `${changeAmount}`;
     } else {
@@ -181,7 +192,7 @@ function animateStatChange(statElementId, changeAmount) {
     statIndicatorSpan.classList.add('show');
 
     setTimeout(() => {
-        statValueSpan.classList.remove('gain', 'loss');
+        statElement.classList.remove('gain', 'loss');
         statIndicatorSpan.classList.remove('show', 'gain', 'loss');
         statIndicatorSpan.textContent = '';
     }, 700);
@@ -253,13 +264,18 @@ function handleGlobalInteractionToSkip(event) {
 
 async function displayPage(pageId) {
     gameTitleElem.classList.add('hidden');
-    gameSubtitleElem.classList.add('hidden');
+    gameSubtitleElem.classList.add('hidden'); // Ensure subtitle is hidden by default for ALL pages
     gameContentElem.classList.add('hidden');
     choicesContainerElem.classList.add('hidden');
     nextButton.classList.add('hidden');
     splashImageElem.classList.add('hidden');
     characterPortraitElem.classList.add('hidden');
     encounterImageElem.classList.add('hidden');
+
+    // Permanently hide the Act Indicator
+    if (actIndicatorElem) {
+        actIndicatorElem.classList.add('hidden');
+    }
 
     gameTitleElem.textContent = '';
     gameSubtitleElem.textContent = '';
@@ -299,7 +315,7 @@ async function displayPage(pageId) {
             break;
 
         case 'splashScreen':
-            gameSubtitleElem.classList.remove('hidden');
+            gameSubtitleElem.classList.remove('hidden'); // ONLY unhide for splash screen
             nextButton.classList.remove('hidden');
             if (staticGameNarrative.splashScreen.image) {
                 splashImageElem.src = `assets/${staticGameNarrative.splashScreen.image}`;
@@ -325,6 +341,7 @@ async function displayPage(pageId) {
             if (pageId === 'introCrewDynamics') contentText = staticGameNarrative.introCrewDynamics.text;
             if (pageId === 'missionBrief') contentText = staticGameNarrative.missionBrief.text;
 
+            // gameSubtitleElem remains hidden due to default at top of function.
             await typeText(gameContentElem, contentText, 30);
             nextButton.textContent = "Continue";
             nextButton.disabled = false;
@@ -373,7 +390,6 @@ async function displayPage(pageId) {
             }
             gameContentElem.classList.remove('hidden');
             nextButton.classList.remove('hidden');
-            statusDisplayElem.classList.add('hidden');
 
             const currentAct = gameData.acts[gameState.currentAct];
             const actDescriptionText = currentAct.actDescription || "Press continue to face your first encounter...";
@@ -403,7 +419,7 @@ async function displayPage(pageId) {
             await typeText(gameTitleElem, getPageTitle('encounter'), 50);
 
             gameContentElem.classList.remove('hidden');
-
+            
             if (encounter.image) {
                 encounterImageElem.src = `assets/${encounter.image}`;
                 encounterImageElem.classList.remove('hidden');
@@ -437,8 +453,6 @@ async function displayPage(pageId) {
                         case "shipHealth":
                             if (comparison === "greaterThanOrEqual") {
                                 showOption = gameState.shipHealth >= conditionValue;
-                            } else if (comparison === "lessThan") {
-                                showOption = gameState.shipHealth < conditionValue;
                             }
                             break;
                         case "crewHealth":
@@ -492,13 +506,11 @@ async function displayPage(pageId) {
                 endGame("error");
                 return;
             }
+            // gameSubtitleElem remains hidden due to default at top of function.
+            gameContentElem.classList.remove('hidden'); 
+            nextButton.classList.remove('hidden'); 
 
-            gameContentElem.classList.remove('hidden');
-            nextButton.classList.remove('hidden');
-            statusDisplayElem.classList.remove('hidden');
-
-            await typeText(gameTitleElem, titleText, 50);
-            await typeText(gameContentElem, gameState.lastChoiceOutcome.text);
+            await typeText(gameTitleElem, getPageTitle('results'), 50);
 
             if (gameState.lastChoiceOutcome.image) {
                 encounterImageElem.src = `assets/${gameState.lastChoiceOutcome.image}`;
@@ -506,6 +518,9 @@ async function displayPage(pageId) {
             } else {
                 encounterImageElem.classList.add('hidden');
             }
+
+            // Display the outcome text
+            await typeText(gameContentElem, gameState.lastChoiceOutcome.text);
 
             console.log("DEBUG: Next encounter ID from outcome (on results screen):", gameState.currentEncounterId);
 
@@ -536,7 +551,7 @@ async function displayPage(pageId) {
             gameContentElem.classList.remove('hidden');
             nextButton.classList.remove('hidden');
             stopBgMusic();
-            statusDisplayElem.classList.remove('hidden');
+            statusDisplayElem.classList.remove('hidden'); // Status display should still be visible for final stats
 
             await typeText(gameTitleElem, titleText, 50);
 
@@ -591,7 +606,7 @@ async function displayPage(pageId) {
             gameContentElem.classList.remove('hidden');
             nextButton.classList.remove('hidden');
             stopBgMusic();
-            statusDisplayElem.classList.remove('hidden');
+            statusDisplayElem.classList.remove('hidden'); // Status display should still be visible for final stats
 
             await typeText(gameTitleElem, titleText, 50);
 
@@ -621,7 +636,10 @@ async function displayPage(pageId) {
             statusDisplayElem.classList.add('hidden');
             break;
     }
+    // Re-add the call to updateActProgressBar()
+    updateActProgressBar();
 }
+
 
 nextButton.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -760,6 +778,45 @@ nextButton.addEventListener('click', (e) => {
     displayPage(gameState.currentPage);
 });
 
+// Function to update the horizontal Act Progress Bar (managed dynamically)
+function updateActProgressBar() {
+    if (!actProgressBarElem || !actProgressItems || actProgressItems.length === 0) {
+        return; // Exit if elements aren't loaded yet
+    }
+
+    // Determine when to show/hide the progress bar
+    if (gameState.currentPage === 'splashScreen' ||
+        gameState.currentPage === 'introGame' ||
+        gameState.currentPage === 'introCrewDynamics' ||
+        gameState.currentPage === 'characterIntro' ||
+        gameState.currentPage === 'missionBrief' ||
+        gameState.currentPage === 'gameOver' ||
+        gameState.currentPage === 'conclusion' ||
+        gameState.currentPage === 'loading' ||
+        !gameData.acts || gameData.acts.length === 0) {
+        actProgressBarElem.classList.add('hidden');
+        return;
+    }
+
+    actProgressBarElem.classList.remove('hidden'); // Show the bar during active acts
+
+    // Loop through each act item and apply 'bright-act' or 'dim-act' class
+    actProgressItems.forEach((item, index) => {
+        // 'index' is 0-based, so Act 1 is index 0, Act 2 is index 1, etc.
+        // gameState.currentAct is also 0-based.
+        if (index <= gameState.currentAct) {
+            // Current act or a previous act
+            item.classList.add('bright-act');
+            item.classList.remove('dim-act');
+        } else {
+            // Future acts
+            item.classList.add('dim-act');
+            item.classList.remove('bright-act');
+        }
+    });
+}
+
+
 function handleChoice(outcome, currentEncounterId) { // Added currentEncounterId parameter
     playSfx(sfxButtonClick);
 
@@ -845,7 +902,7 @@ async function initializeGame() {
         gameData = {
             ...staticGameNarrative,
             characters: charactersData,
-            acts: actsData,
+            acts: actsData, // This is where gameData.acts gets populated
             encounterLookup: encounterLookup
         };
 
