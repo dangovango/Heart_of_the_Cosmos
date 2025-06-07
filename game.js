@@ -6,15 +6,20 @@ const staticGameNarrative = {
         image: "splash_screen_cover.png"
     },
     introGame: {
-        text: "Welcome, brave spacefarers! Across the cosmos, legends whisper of the STAR-HEART GEM, a treasure beyond imagination hidden deep within the treacherous Cygnus Nebula. You are the Captain of a renowned crew, charting a course toward this fabled prize. <br><br>* But be warned: every decision you make will echo through the void. Prepare for adventure, danger, and glory!"
+        text: "Welcome, brave spacefarers! Across the cosmos, legends whisper of the STAR-HEART GEM, a treasure beyond imagination hidden deep within the treacherous Cygnus Nebula. You are the Captain of a renowned crew, charting a course toward this fabled prize. <br><br>* But be warned: every decision you make only takes you deeper into the unknown. There is no turning back."
     },
     introCrewDynamics: {
-        text: "Your crew is your greatest asset: a diverse team, each member bringing unique skills, experiences, and perspectives to the table. As you face the cosmos' trials, their strengths will be tested, and your bonds forged in the fires of space. Your survival and success depend on your collective wisdom.<br><br>* Before every critical choice, engage with your crew: discuss the situation, debate the options, and collaboratively decide on the best course of action. Your unity is your power."
+        text: "Your crew is your greatest asset: a diverse team, each member bringing unique skills, experiences, and perspectives to the table. <br><br>As you face the cosmos' trials, their strengths will be tested, and your bonds forged in the fires of space. Your survival and success depend on your collective wisdom."
     },
     missionBrief: {
-        text: "The coordinates are set. Your mission: penetrate the treacherous Cygnus Nebula and locate the fabled STAR-HEART GEM. This perilous quest demands more than just courage; it demands cunning, foresight, and a united front.<br><br>At each encounter, you will face critical decisions. Remember to first assess the situation and understand the challenges. Then, consult your crew, leveraging their unique insights through discussion. Finally, make your collective decision, as every choice has a profound impact on your ship, your crew, and your ultimate success.<br><br>Your ultimate objective is clear: Secure the STAR-HEART GEM, preserve your crew, and return a legend!"
+        text: "The coordinates are set. Your mission: penetrate the treacherous Cygnus Nebula and locate the fabled STAR-HEART GEM.<br><br>Your ship, the *Star-Seeker*, is equipped with advanced technology and a loyal crew. But the journey will not be easy. The nebula is fraught with dangers: hostile factions, cosmic anomalies, and the ever-present threat of the unknown.<br><br>Prepare your ship, gather your crew, and brace for the challenges ahead. The STAR-HEART GEM awaits!"
     },
-    conclusion: "Your crew has faced incredible challenges, made difficult decisions, and forged an unforgettable story. The STAR-HEART GEM is now in good hands!"
+    conclusion: "Your crew has faced incredible challenges, made difficult decisions, and forged an unforgettable story.",
+    gameOver: {
+        shipDestroyed: "Your ship sustained critical damage and was destroyed. The mission is a failure.",
+        crewPerished: "Your crew suffered catastrophic losses. With no one left to pilot the ship, your adventure ends here.",
+        generic: "An unforeseen anomaly has ended your journey."
+    }
 };
 
 const pageTitles = {
@@ -97,6 +102,9 @@ function getPageTitle(pageId) {
         if (currentChar) {
             return `Meet ${currentChar.name}`;
         }
+    }
+    if (pageId === 'gameOver') {
+        console.log("getPageTitle for gameOver returning:", pageTitles[pageId]);
     }
     return `Page: ${pageId}`;
 }
@@ -194,14 +202,18 @@ function animateStatChange(statElementId, changeAmount) {
 }
 
 async function typeText(element, text, speed = 30) {
+    const elementId = element ? element.id : 'unknown_element';
+    console.log(`DEBUG: typeText called for element ID: ${elementId}, text (full): "${text}"`);
     return new Promise(resolve => {
         if (typingInterval) {
+            console.log(`DEBUG: Clearing previous typingInterval for ${elementId}.`);
             clearInterval(typingInterval);
         }
         stopTypingSfx();
 
+        element.setAttribute('data-full-text-html', text);
         element.textContent = '';
-        element.removeAttribute('data-full-text-html');
+        console.log(`DEBUG: Element ${elementId} content cleared by typeText. data-full-text-html set to: "${element.getAttribute('data-full-text-html')}"`);
 
         let i = 0;
 
@@ -209,32 +221,37 @@ async function typeText(element, text, speed = 30) {
         currentlyTypingElement = element;
         isTypingActive = true;
 
-        element.setAttribute('data-full-text-html', text);
-
         startTypingSfx();
 
+        console.log(`DEBUG: Starting setInterval for ${elementId}. Initial i: ${i}, text.length: ${text.length}`);
         typingInterval = setInterval(() => {
+            console.log(`DEBUG: setInterval tick for ${elementId}. Current i: ${i}, text.length: ${text.length}. isTypingActive: ${isTypingActive}`);
             if (i < text.length) {
                 if (text.substring(i, i + 4) === '<br>') {
                     element.innerHTML += '<br>';
                     i += 4;
+                    console.log(`DEBUG: Added <br> to ${elementId}. New i: ${i}`);
                 } else {
                     element.innerHTML += text.charAt(i);
                     i++;
+                    console.log(`DEBUG: Added char '${text.charAt(i-1)}' to ${elementId}. New i: ${i}`);
                 }
             } else {
+                console.log(`DEBUG: Typing complete for ${elementId}. Clearing interval.`);
                 clearInterval(typingInterval);
                 stopTypingSfx();
                 isTypingActive = false;
                 currentTypingResolve();
                 currentTypingResolve = null;
                 currentlyTypingElement = null;
+                element.removeAttribute('data-full-text-html');
             }
         }, speed);
     });
 }
 
 function handleGlobalInteractionToSkip(event) {
+    // Prevent default behavior for space/enter key presses, but allow them to skip typing
     if (event.type === 'keydown' && (event.key === ' ' || event.key === 'Enter')) {
         event.preventDefault();
     }
@@ -245,19 +262,28 @@ function handleGlobalInteractionToSkip(event) {
 
         const fullHtml = currentlyTypingElement.getAttribute('data-full-text-html');
         if (fullHtml) {
-            currentlyTypingElement.innerHTML = fullHtml;
+            currentlyTypingElement.innerHTML = fullHtml; // Populate with full text if available
         }
 
         isTypingActive = false;
         currentTypingResolve();
         currentTypingResolve = null;
-        currentlyTypingElement = null;
+        // ONLY remove the attribute if currentlyTypingElement is NOT null
+        if (currentlyTypingElement) {
+            currentlyTypingElement.removeAttribute('data-full-text-html');
+        }
+        currentlyTypingElement = null; // Set to null *after* removing attribute
 
-        event.stopPropagation();
+        event.stopPropagation(); // Stop event propagation if we handle it
     }
 }
 
 async function displayPage(pageId) {
+    console.log(`DEBUG: displayPage called for pageId: ${pageId}`);
+
+    console.log("DEBUG: gameTitleElem element reference:", gameTitleElem);
+
+    // Initial hiding of all elements to ensure a clean slate
     gameTitleElem.classList.add('hidden');
     gameSubtitleElem.classList.add('hidden');
     gameContentElem.classList.add('hidden');
@@ -271,11 +297,13 @@ async function displayPage(pageId) {
         actIndicatorElem.classList.add('hidden');
     }
 
+    // Clear content of main text elements
     gameTitleElem.textContent = '';
     gameSubtitleElem.textContent = '';
     gameContentElem.textContent = '';
     choicesContainerElem.innerHTML = '';
 
+    // If typing is active, stop it before displaying a new page
     if (isTypingActive) {
         clearInterval(typingInterval);
         stopTypingSfx();
@@ -287,25 +315,26 @@ async function displayPage(pageId) {
         currentlyTypingElement = null;
     }
 
+    // Disable buttons until content is ready
     nextButton.disabled = true;
     document.querySelectorAll('.choice-button').forEach(button => button.disabled = true);
 
-    gameTitleElem.removeAttribute('data-full-text');
-    gameSubtitleElem.removeAttribute('data-full-text');
-    gameContentElem.removeAttribute('data-full-text');
+    // Ensure data-full-text-html attributes are clean
+    gameTitleElem.removeAttribute('data-full-text-html');
+    gameSubtitleElem.removeAttribute('data-full-text-html');
+    gameContentElem.removeAttribute('data-full-text-html');
 
     const titleText = getPageTitle(pageId);
-    if (titleText) {
-        gameTitleElem.classList.remove('hidden');
-    }
 
     // Remove 'zoomed' class from splash image when transitioning away from splash screen
     if (pageId !== 'splashScreen') {
         splashImageElem.classList.remove('zoomed');
     }
 
+    // --- Start of Page-Specific Logic ---
     switch (pageId) {
         case 'loading':
+            gameTitleElem.classList.remove('hidden');
             gameTitleElem.textContent = "Loading Game Data...";
             gameContentElem.textContent = "Please wait.";
             gameContentElem.classList.remove('hidden');
@@ -313,6 +342,7 @@ async function displayPage(pageId) {
             break;
 
         case 'splashScreen':
+            gameTitleElem.classList.remove('hidden');
             gameSubtitleElem.classList.remove('hidden');
             nextButton.classList.remove('hidden');
             if (staticGameNarrative.splashScreen.image) {
@@ -324,8 +354,11 @@ async function displayPage(pageId) {
                 }, 100);
             }
             statusDisplayElem.classList.add('hidden');
-            await typeText(gameTitleElem, titleText, 50);
-            await typeText(gameSubtitleElem, staticGameNarrative.splashScreen.subtitle, 40);
+            gameTitleElem.textContent = titleText;
+            await new Promise(resolve => setTimeout(async () => { // Added delay for subtitle typing
+                await typeText(gameSubtitleElem, staticGameNarrative.splashScreen.subtitle, 40);
+                resolve();
+            }, 20));
             nextButton.textContent = "Launch Into the Unknown";
             nextButton.disabled = false;
             break;
@@ -337,13 +370,17 @@ async function displayPage(pageId) {
             nextButton.classList.remove('hidden');
             statusDisplayElem.classList.add('hidden');
 
-            await typeText(gameTitleElem, titleText, 50);
+            gameTitleElem.classList.remove('hidden');
+            gameTitleElem.textContent = titleText;
             let contentText = '';
             if (pageId === 'introGame') contentText = staticGameNarrative.introGame.text;
             if (pageId === 'introCrewDynamics') contentText = staticGameNarrative.introCrewDynamics.text;
             if (pageId === 'missionBrief') contentText = staticGameNarrative.missionBrief.text;
 
-            await typeText(gameContentElem, contentText, 30);
+            await new Promise(resolve => setTimeout(async () => { // Added delay for gameContentElem typing
+                await typeText(gameContentElem, contentText, 30);
+                resolve();
+            }, 20));
             nextButton.textContent = "Continue";
             nextButton.disabled = false;
             break;
@@ -365,15 +402,18 @@ async function displayPage(pageId) {
                 characterPortraitElem.classList.remove('hidden');
                 statusDisplayElem.classList.add('hidden');
 
-                await typeText(gameTitleElem, titleText, 50);
+                gameTitleElem.classList.remove('hidden');
+                gameTitleElem.textContent = titleText;
 
                 const imagePath = `assets/${currentChar.portrait}`;
                 characterPortraitElem.src = imagePath;
 
                 let traitsText = `TRAITS:<br>`;
                 traitsText += currentChar.traits.map(trait => `* ${trait}`).join('<br>');
-                await typeText(gameContentElem, traitsText, 30);
-
+                await new Promise(resolve => setTimeout(async () => { // Added delay for gameContentElem typing
+                    await typeText(gameContentElem, traitsText, 30);
+                    resolve();
+                }, 20));
                 nextButton.textContent = "Continue";
                 nextButton.disabled = false;
             } else {
@@ -395,8 +435,12 @@ async function displayPage(pageId) {
             const currentActData = gameData.acts[gameState.currentAct];
             const actDescriptionText = currentActData.actDescription || "Press continue to face your first encounter...";
 
-            await typeText(gameTitleElem, titleText, 50);
-            await typeText(gameContentElem, actDescriptionText, 30);
+            gameTitleElem.classList.remove('hidden');
+            gameTitleElem.textContent = titleText;
+            await new Promise(resolve => setTimeout(async () => { // Added delay for gameContentElem typing
+                await typeText(gameContentElem, actDescriptionText, 30);
+                resolve();
+            }, 20));
             nextButton.textContent = "Continue";
             nextButton.disabled = false;
             break;
@@ -425,10 +469,14 @@ async function displayPage(pageId) {
             choicesContainerElem.classList.remove('hidden');
             statusDisplayElem.classList.remove('hidden');
             updateStatusDisplay();
-            updateActProgressBar(); // Update progress bar for encounters
+            updateActProgressBar();
 
-            await typeText(gameTitleElem, getPageTitle('encounter'), 50);
-            await typeText(gameContentElem, encounter.scenario);
+            gameTitleElem.classList.remove('hidden');
+            gameTitleElem.textContent = getPageTitle('encounter');
+            await new Promise(resolve => setTimeout(async () => { // Added delay for gameContentElem typing
+                await typeText(gameContentElem, encounter.scenario);
+                resolve();
+            }, 20));
 
             choicesContainerElem.innerHTML = '';
             encounter.options.forEach((option) => {
@@ -467,10 +515,14 @@ async function displayPage(pageId) {
                 encounterImageElem.classList.add('hidden');
             }
             statusDisplayElem.classList.remove('hidden');
-            updateStatusDisplay(); // Ensure stats are updated on results screen
+            updateStatusDisplay();
 
-            await typeText(gameTitleElem, getPageTitle('results'), 50);
-            await typeText(gameContentElem, gameState.lastChoiceOutcome.text);
+            gameTitleElem.classList.remove('hidden');
+            gameTitleElem.textContent = getPageTitle('results');
+            await new Promise(resolve => setTimeout(async () => { // Added delay for gameContentElem typing
+                await typeText(gameContentElem, gameState.lastChoiceOutcome.text);
+                resolve();
+            }, 20));
 
             nextButton.textContent = "Continue";
             nextButton.disabled = false;
@@ -484,13 +536,12 @@ async function displayPage(pageId) {
             }
             gameContentElem.classList.remove('hidden');
             nextButton.classList.remove('hidden');
-            statusDisplayElem.classList.add('hidden'); // Hide status for summary screen
+            statusDisplayElem.classList.add('hidden');
 
-            const actSummarized = gameData.acts[gameState.currentAct]; // This is the act whose summary we're showing
+            const actSummarized = gameData.acts[gameState.currentAct];
             let summaryContentText = actSummarized.summary || "You have completed this act!";
 
-            // Add specific ending conditions for the final act (Act 3, index 2)
-            if (gameState.currentAct === gameData.acts.length - 1) { // If it's the last act
+            if (gameState.currentAct === gameData.acts.length - 1) {
                 if (gameState.treasure >= 784 && gameState.shipHealth >= 41 && gameState.crewHealth >= 81) {
                     summaryContentText += "<br><br>With the **Star-Heart Gem secured** and your crew triumphant, you return home a legend! The galaxy celebrates your success.";
                 } else if (gameState.treasure >= 592 || gameState.shipHealth >= 21 || gameState.crewHealth >= 71) {
@@ -500,20 +551,25 @@ async function displayPage(pageId) {
                 }
             }
 
-            await typeText(gameTitleElem, getPageTitle('endOfActSummary'), 50);
-            await typeText(gameContentElem, summaryContentText, 30);
+            gameTitleElem.classList.remove('hidden');
+            gameTitleElem.textContent = getPageTitle('endOfActSummary');
+            await new Promise(resolve => setTimeout(async () => { // Added delay for gameContentElem typing
+                await typeText(gameContentElem, summaryContentText, 30);
+                resolve();
+            }, 20));
             nextButton.textContent = "Proceed";
             nextButton.disabled = false;
             break;
 
         case 'conclusion':
             gameContentElem.classList.remove('hidden');
-            nextButton.classList.remove('hidden'); // Keep for restart game
+            nextButton.classList.remove('hidden');
             stopBgMusic();
-            statusDisplayElem.classList.remove('hidden'); // Status display should still be visible for final stats
-            updateStatusDisplay(); // Make sure final stats are shown
+            statusDisplayElem.classList.remove('hidden');
+            updateStatusDisplay();
 
-            await typeText(gameTitleElem, titleText, 50);
+            gameTitleElem.classList.remove('hidden');
+            gameTitleElem.textContent = titleText;
 
             let conclusionText = staticGameNarrative.conclusion + "<br><br>";
             conclusionText += `Final Ship Health: ${gameState.shipHealth}<br>`;
@@ -556,49 +612,82 @@ async function displayPage(pageId) {
                 conclusionText += "Though your journey concluded, it was fraught with struggle. Perhaps next time, greater fortunes await.";
             }
 
-            await typeText(gameContentElem, conclusionText, 30);
+            await new Promise(resolve => setTimeout(async () => { // Added delay for gameContentElem typing
+                await typeText(gameContentElem, conclusionText, 30);
+                resolve();
+            }, 20));
 
             nextButton.textContent = "Restart Game";
             nextButton.disabled = false;
             break;
 
         case 'gameOver':
-            gameContentElem.classList.remove('hidden');
-            nextButton.classList.remove('hidden'); // Keep for restart game
-            stopBgMusic();
-            statusDisplayElem.classList.remove('hidden'); // Status display should still be visible for final stats
-            updateStatusDisplay(); // Make sure final stats are shown
+            console.log("DEBUG: Inside displayPage -> case 'gameOver'.");
+            gameTitleElem.classList.remove('hidden');
+            console.log("DEBUG: gameTitleElem classes after removing 'hidden':", gameTitleElem.classList);
 
-            await typeText(gameTitleElem, titleText, 50);
+            gameContentElem.classList.remove('hidden');
+            nextButton.classList.remove('hidden');
+            stopBgMusic();
+            statusDisplayElem.classList.remove('hidden');
+            updateStatusDisplay();
+
+            const gameOverTitle = getPageTitle('gameOver');
+            console.log("DEBUG: gameOverTitle from getPageTitle:", gameOverTitle);
+
+            gameTitleElem.textContent = gameOverTitle;
+            console.log("DEBUG: gameTitleElem.textContent set directly to:", gameTitleElem.textContent);
 
             let gameOverMessage = "";
             if (gameState.gameOverReason === 'shipDestroyed') {
-                gameOverMessage = "Your ship sustained critical damage and was destroyed. The mission is a failure.";
+                gameOverMessage = staticGameNarrative.gameOver.shipDestroyed;
             } else if (gameState.gameOverReason === 'crewPerished') {
-                gameOverMessage = "Your crew suffered catastrophic losses. With no one left to pilot the ship, your adventure ends here.";
+                gameOverMessage = staticGameNarrative.gameOver.crewPerished;
             } else {
-                gameOverMessage = "An unforeseen anomaly has ended your journey.";
+                gameOverMessage = staticGameNarrative.gameOver.generic;
             }
 
             gameOverMessage += `<br><br>Final Ship Health: ${gameState.shipHealth}`;
             gameOverMessage += `<br>Final Crew Morale: ${gameState.crewHealth}`;
             gameOverMessage += `<br>Final Treasure: ${gameState.treasure} credits`;
 
-            await typeText(gameContentElem, gameOverMessage, 30);
+            await new Promise(resolve => setTimeout(async () => { // Added delay for gameContentElem typing
+                await typeText(gameContentElem, gameOverMessage, 30);
+                resolve();
+            }, 20));
 
             nextButton.textContent = "Restart Game";
             nextButton.disabled = false;
             break;
 
         default:
+            console.log("Default case in displayPage");
             gameContentElem.classList.remove('hidden');
-            await typeText(gameTitleElem, titleText, 50);
-            await typeText(gameContentElem, "An unknown game state occurred.", 30);
+            gameTitleElem.classList.remove('hidden');
+            gameTitleElem.textContent = titleText;
+            await new Promise(resolve => setTimeout(async () => { // Added delay for gameContentElem typing
+                await typeText(gameContentElem, "An unknown game state occurred.", 30);
+                resolve();
+            }, 20));
             statusDisplayElem.classList.add('hidden');
             break;
     }
+    // --- End of Page-Specific Logic ---
+
     updateActProgressBar();
+
+    // Keep the scrollIntoView call here as a final guarantee, with a slightly larger delay
+    setTimeout(() => {
+        if (gameTitleElem) { // Ensure element exists before attempting to scroll
+            gameTitleElem.scrollIntoView({
+                behavior: 'auto',
+                block: 'start'
+            });
+            console.log("DEBUG: gameTitleElem.scrollIntoView executed at end of displayPage.");
+        }
+    }, 100);
 }
+
 
 function checkCondition(condition) {
     if (!condition) return true;
@@ -663,11 +752,13 @@ function applyOutcome(outcome) {
     gameState.treasure = Math.max(0, gameState.treasure);
 
     if (gameState.shipHealth <= 0) {
-        endGame("shipDestroyed"); // Use string reason
+        console.log("DEBUG: Ship health reached 0. Calling endGame('shipDestroyed').");
+        endGame("shipDestroyed");
         return true;
     }
     if (gameState.crewHealth <= 0) {
-        endGame("crewPerished"); // Use string reason
+        console.log("DEBUG: Crew health reached 0. Calling endGame('crewPerished').");
+        endGame("crewPerished");
         return true;
     }
     return false;
@@ -710,48 +801,37 @@ function handleChoice(outcome, currentEncounterId) {
     document.querySelectorAll('.choice-button').forEach(button => button.disabled = true);
     nextButton.disabled = true;
 
-    // Apply special effects if any
     if (outcome.specialEffect) {
         if (!gameState.specialEffects.includes(outcome.specialEffect)) {
             gameState.specialEffects.push(outcome.specialEffect);
+            console.log(`Special effect added: ${outcome.specialEffect}`);
         }
     }
-    // Handle milestones or quests if you implement them
-    if (outcome.milestone) { /* ... */ }
-    if (outcome.startQuest) { /* ... */ }
-    if (outcome.completeQuest) { /* ... */ }
 
     gameState.lastChoiceOutcome = outcome;
     gameState.lastEncounterId = currentEncounterId;
 
-    const isGameOver = applyOutcome(outcome); // applyOutcome now returns true if game over
+    const isGameOver = applyOutcome(outcome);
 
-    // Even if nextId is null, we always go to the results page first
-    // This allows the player to see the outcome text before proceeding.
     if (!isGameOver) {
         gameState.currentPage = 'results';
     }
-    // If isGameOver is true, endGame() was already called by applyOutcome,
-    // and displayPage will be called with 'gameOver'.
     displayPage(gameState.currentPage);
 }
 
 document.addEventListener('click', handleGlobalInteractionToSkip);
 document.addEventListener('keydown', handleGlobalInteractionToSkip);
 
-// The primary navigation logic is within the nextButton click listener.
 nextButton.addEventListener('click', (e) => {
     e.stopPropagation();
 
     playSfx(sfxButtonClick);
 
-    // Skip typing animation if active
     if (isTypingActive && currentTypingResolve) {
         handleGlobalInteractionToSkip(e);
         return;
     }
 
-    // Handle restart game logic
     if (gameState.currentPage === 'gameOver' || gameState.currentPage === 'conclusion') {
         gameState = {
             currentPage: 'splashScreen',
@@ -767,29 +847,28 @@ nextButton.addEventListener('click', (e) => {
             specialEffects: [],
             gameOverReason: null
         };
-        stopBgMusic(); // Ensure music stops before restarting
+        stopBgMusic();
         displayPage(gameState.currentPage);
         return;
     }
 
-    // Main game progression logic
     switch (gameState.currentPage) {
         case 'splashScreen':
-            playBgMusic(); // Start music after splash screen
+            playBgMusic();
             gameState.currentPage = 'introGame';
             break;
         case 'introGame':
             gameState.currentPage = 'introCrewDynamics';
             break;
         case 'introCrewDynamics':
-            gameState.currentEncounter = 1; // Assuming character intros are based on this counter
+            gameState.currentEncounter = 1;
             gameState.currentPage = 'characterIntro';
             break;
         case 'characterIntro':
             gameState.currentEncounter++;
             if (gameState.currentEncounter > Object.keys(gameData.characters).length) {
                 gameState.currentPage = 'missionBrief';
-                gameState.currentEncounter = 0; // Reset for actual encounter IDs
+                gameState.currentEncounter = 0;
             }
             break;
         case 'missionBrief':
@@ -808,15 +887,11 @@ nextButton.addEventListener('click', (e) => {
             break;
 
         case 'results':
-            // Logic for what happens AFTER displaying results from an encounter
             const outcomeNextId = gameState.lastChoiceOutcome.nextId;
 
             if (outcomeNextId === null) {
-                // If nextId is null, it signifies the end of a path for the current act.
-                // Go to the act summary for the *current* act (which was just completed).
                 gameState.currentPage = 'endOfActSummary';
             } else {
-                // If nextId is present, we check if it's a transition to a new act
                 const nextEncounter = gameData.encounterLookup[outcomeNextId];
                 if (!nextEncounter) {
                     console.error(`Outcome.nextId "${outcomeNextId}" does not point to a valid encounter.`);
@@ -826,29 +901,21 @@ nextButton.addEventListener('click', (e) => {
 
                 const nextActIndex = nextEncounter.actIndex;
                 if (nextActIndex !== undefined && nextActIndex > gameState.currentAct) {
-                    // Transitioning to a new act.
                     gameState.currentPage = 'endOfActSummary';
                 } else {
-                    // Regular transition: within the same act, or jumping to an encounter in a previous/same act.
                     gameState.currentEncounterId = outcomeNextId;
-                    gameState.currentAct = nextActIndex; // Ensure currentAct is updated if jumping within existing acts
+                    gameState.currentAct = nextActIndex;
                     gameState.currentPage = 'encounter';
                 }
             }
             break;
 
         case 'endOfActSummary':
-            // Logic for what happens AFTER displaying an act summary
-            // gameState.currentAct holds the index of the act that was *just summarized*.
-            // Now, determine if there are more acts *after* this one.
             if (gameState.currentAct + 1 < gameData.acts.length) {
-                // There are more acts.
                 gameState.currentAct++;
-                // Set the first encounter of the new act
                 gameState.currentEncounterId = gameData.acts[gameState.currentAct].encounters[0].id;
-                gameState.currentPage = 'newActTitle'; // Go to the new act's title page
+                gameState.currentPage = 'newActTitle';
             } else {
-                // All acts are finished. Proceed to the final game conclusion.
                 gameState.currentPage = 'conclusion';
             }
             break;
@@ -859,22 +926,26 @@ nextButton.addEventListener('click', (e) => {
 
 
 async function initializeGame() {
+    console.log("initializeGame() called");
     displayPage('loading');
 
     try {
+        console.log("Fetching characters data...");
         const charactersResponse = await fetch('data/characters.json');
+        console.log("Fetching characters data...done");
         const charactersData = await charactersResponse.json();
 
+        console.log("Fetching encounters data...");
         const encountersResponse = await fetch('data/encounters.json');
+        console.log("Fetching encounters data...done");
         const actsData = await encountersResponse.json();
 
         const encounterLookup = {};
-        actsData.forEach((act, actIndex) => { // Added actIndex here
+        actsData.forEach((act, actIndex) => {
             act.encounters.forEach(encounter => {
                 if (encounterLookup[encounter.id]) {
                     console.warn(`Duplicate encounter ID found: ${encounter.id}. This will cause issues with branching.`);
                 }
-                // Store encounter with its actIndex in the lookup
                 encounterLookup[encounter.id] = { ...encounter, actIndex: actIndex };
             });
         });
@@ -884,27 +955,30 @@ async function initializeGame() {
             acts: actsData,
             encounterLookup: encounterLookup
         };
-        // Merge static narrative AFTER gameData is populated
         Object.assign(gameData, staticGameNarrative);
 
-
         console.log("Game data loaded successfully:", gameData);
+        console.log("Setting currentPage to splashScreen");
+        console.log("gameState before setting currentPage:", gameState);
 
         gameState.currentPage = 'splashScreen';
         displayPage(gameState.currentPage);
 
     } catch (error) {
         console.error("Failed to load game data:", error);
-        gameTitleElem.textContent = "Error Loading Game!";
-        gameContentElem.textContent = "Please check your network connection or file paths. (See console for details)";
         gameTitleElem.classList.remove('hidden');
         gameContentElem.classList.remove('hidden');
+        gameTitleElem.textContent = "Error Loading Game!";
+        gameContentElem.textContent = "Please check your network connection, file paths (data/characters.json, data/encounters.json), or ensure your JSON data is valid. (See console for more details)";
     }
 }
 
 function endGame(reason = "unknown") {
+    console.log("DEBUG: endGame called. Reason:", reason);
     gameState.gameOverReason = reason;
     gameState.currentPage = 'gameOver';
+    console.log("DEBUG: gameState.currentPage set to:", gameState.currentPage);
+    console.log("DEBUG: Calling displayPage with 'gameOver'.");
     displayPage(gameState.currentPage);
 }
 
