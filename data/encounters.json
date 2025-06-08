@@ -320,6 +320,83 @@
                             "nextId": "act1_enc3"
                         }
                     }
+                ],
+                "options": [
+                    {
+                        "text": "Speak with the stranger.",
+                        "outcome": {
+                            "image": "outcome/act1_enc_smugglers_den_outcome1.png",
+                            "text": "The stranger praises Zephyr's piloting skills and offers a discount on components.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "specialEffect": "smugglerDiscount",
+                            "nextId": "act1_enc_smugglers_den"
+                        },
+                        "condition": {
+                            "type": "specialEffect",
+                            "flag": "credZephyr",
+                            "comparison": "set"
+                        }
+                    },
+                    {
+                        "text": "Speak with the stranger.",
+                        "outcome": {
+                            "image": "outcome/act1_enc_smugglers_den_outcome1.png",
+                            "text": "The stranger greets Jax like an old friend and slips him some credits.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 50,
+                            "crewHealthChange": 0,
+                            "nextId": "act1_enc_smugglers_den"
+                        },
+                        "condition": {
+                            "type": "specialEffect",
+                            "flag": "credJax",
+                            "comparison": "set"
+                        }
+                    },
+                    {
+                        "text": "Speak with the stranger.",
+                        "outcome": {
+                            "image": "outcome/act1_enc_smugglers_den_outcome1.png",
+                            "text": "The stranger seems more interested in extracting information from Dr. Aris before dismissing the crew.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "nextId": "act1_enc_smugglers_den"
+                        },
+                        "condition": {
+                            "type": "specialEffect",
+                            "flag": "credAris",
+                            "comparison": "set"
+                        }
+                    },
+                    {
+                        "text": "Speak with the stranger.",
+                        "outcome": {
+                            "image": "outcome/act1_enc_smugglers_den_outcome1.png",
+                            "text": "The stranger is uninterested in speaking with the crew.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "nextId": "act1_enc_smugglers_den"
+                        },
+                        "condition": {
+                            "type": "specialEffect",
+                            "flag": "credZephyr",
+                            "comparison": "not_set"
+                        },
+                        "condition": {
+                            "type": "specialEffect",
+                            "flag": "credJax",
+                            "comparison": "not_set"
+                        },
+                        "condition": {
+                            "type": "specialEffect",
+                            "flag": "credAris",
+                            "comparison": "not_set"
+                        }
+                    }
                 ]
             },
             {
@@ -483,633 +560,4 @@
                             "image": "outcome/act2_enc_merchant_convoy_outcome2.png",
                             "text": "Your ambush is swift and brutal. The convoy's escorts are quickly overwhelmed. You secure a large haul of valuable cargo, but the merchants' distress signals alert nearby authorities, marking you as a pirate. <br><br>'Worth every credit,' Jax laughs, but Aris looks grim. 'This will haunt us, Captain. We've gained wealth, but lost our standing.' Your reputation as a pirate now precedes you, and you can almost guarantee the Rival Faction's patrol will be waiting for you, eager to exact tribute or worse.",
                             "shipHealthChange": -15,
-                            "treasureChange": 300,
-                            "crewHealthChange": -10,
-                            "specialEffect": "pirateReputation",
-                            "nextId": "act2_enc3"
-                        }
-                    },
-                    {
-                        "text": "Bypass the convoy and proceed, avoiding any engagement.",
-                        "outcome": {
-                            "image": "outcome/act2_enc_merchant_convoy_outcome3.png",
-                            "text": "You opt for caution, altering your course to avoid the convoy. You gain nothing, but avoid any potential conflict or complications. <br><br>'Sometimes, the smartest move is no move at all,' Zephyr comments, though Jax looks disappointed. The journey continues smoothly, bringing you closer to the inevitable confrontation with the Rival Faction's patrol guarding the deeper Wastes.",
-                            "shipHealthChange": 0,
-                            "treasureChange": 0,
-                            "crewHealthChange": 0,
-                            "nextId": "act2_enc3"
-                        }
-                    }
-                ]
-            },
-            {
-                "id": "act2_enc3",
-                "displayName": "Rival Faction Confrontation",
-                "image": "encounters/act2_enc3.png",
-                "scenario": "A small, heavily armed patrol ship of the Rival Faction and its Pirate Lord appears, blocking your path. They demand all your treasure for passage through their territory. <br><br>This is your first direct encounter with them, and their attitude may depend on your reputation.",
-                "options": [
-                    {
-                        "text": "Attempt to intimidate them with a show of force, relying on Captain Eva's commanding presence and your ship's weaponry.",
-                        "outcome": {
-                            "image": "outcome/act2_enc3_outcome1.png",
-                            "text": "Captain Eva broadcasts a chilling warning, backed by a simulated weapons lock. The enemy hesitates, and after a tense standoff, they decide you're not worth the trouble and back down. <br><br>'Consider this a warning,' the Pirate Lord growls over the comms before retreating. You pass through unmolested and without paying tribute, gaining a small boost to your reputation. The path ahead leads deeper towards the Nebula's Heart.",
-                            "shipHealthChange": 0,
-                            "treasureChange": 0,
-                            "crewHealthChange": 0,
-                            "specialEffect": "reputationGain",
-                            "nextId": "act2_enc_hostile_patrol_check"
-                        },
-                        "condition": {
-                            "type": "specialEffect",
-                            "flag": "reputationLossMinor",
-                            "comparison": "not_set"
-                        }
-                    },
-                    {
-                        "text": "Attempt to intimidate them, despite your tarnished reputation.",
-                        "outcome": {
-                            "image": "outcome/act2_enc3_outcome_reputation_fail.png",
-                            "text": "Captain Eva's attempt at intimidation is met with scorn. 'We've heard about you,' sneers the Pirate Lord. 'Your kind pays double!' <br><br>They open fire immediately, forcing you to engage in a damaging skirmish. 'They knew who we were!' Jax shouts as alarms blare. You manage to break through, but your ship is battered and the crew is shaken. The path beyond, though clear, seems fraught with even more danger.",
-                            "shipHealthChange": -20,
-                            "treasureChange": 0,
-                            "crewHealthChange": -10,
-                            "specialEffect": "rivalFactionEncountered",
-                            "nextId": "act2_enc_hostile_patrol_check"
-                        },
-                        "condition": {
-                            "type": "specialEffect",
-                            "flag": "reputationLossMinor",
-                            "comparison": "set"
-                        }
-                    },
-                    {
-                        "text": "You are known as a pirate. Prepare for immediate battle.",
-                        "outcome": {
-                            "image": "outcome/act2_enc3_outcome_pirate.png",
-                            "text": "As soon as your ship is identified, the Rival Faction opens fire, clearly recognizing you as a pirate. 'No parley for your kind!' a voice snarls. There's no negotiation; only battle. You engage in a brutal fight to break through their blockade, taking heavy hits. <br><br>'They came prepared!' Zephyr curses, trying to dodge fire. You force your way through, but the cost to your ship and crew is significant. The direct path to the Nebula's Heart is open, but you're limping.",
-                            "shipHealthChange": -25,
-                            "treasureChange": 0,
-                            "crewHealthChange": -15,
-                            "specialEffect": "rivalFactionEncountered",
-                            "nextId": "act2_enc_hostile_patrol_check"
-                        },
-                        "condition": {
-                            "type": "specialEffect",
-                            "flag": "pirateReputation",
-                            "comparison": "set"
-                        }
-                    },
-                    {
-                        "text": "Attempt to negotiate a smaller fee or offer a diversion, relying on Dr. Aris's quick thinking and Zephyr's evasive skills.",
-                        "outcome": {
-                            "image": "outcome/act2_enc3_outcome2.png",
-                            "text": "You try to negotiate, but the enemy is resolute. Your attempts to bargain or evade are met with scorn. They open fire, forcing you to pay a substantial tribute to avoid a protracted fight, damaging your ship and your pride. <br><br>'A costly lesson, Captain,' Aris mutters, 'but at least we're still in one piece.' You pass through their territory, now poorer but with your objective still in sight: the deeper Wastes and the Nebula's Heart.",
-                            "shipHealthChange": -15,
-                            "treasureChange": -100,
-                            "crewHealthChange": 0,
-                            "specialEffect": "rivalFactionEncountered",
-                            "nextId": "act2_enc_hostile_patrol_check"
-                        },
-                        "condition": {
-                            "type": "specialEffect",
-                            "flag": "reputationLossMinor",
-                            "comparison": "not_set"
-                        }
-                    }
-                ]
-            },
-            {
-                "id": "act2_enc_ancient_ruins",
-                "displayName": "Ancient Ruins Discovery",
-                "image": "encounters/act2_enc_ancient_ruins.png",
-                "scenario": "Your scans pick up the faint, almost imperceptible outline of ancient structures embedded within a rogue planetoid. These ruins predate known galactic civilizations and could hold incredible secrets or dangerous traps.",
-                "options": [
-                    {
-                        "text": "Send an exploration team to cautiously investigate the ruins.",
-                        "outcome": {
-                            "image": "outcome/act2_enc_ancient_ruins_outcome1.png",
-                            "text": "Your team navigates treacherous passageways. They discover a chamber filled with priceless alien artifacts, netting you 300 credits. <br><br>However, disturbing the ruins activates an ancient defense drone, which damages your ship before it's neutralized. <br><br>'A high price for knowledge, Captain,' Aris notes as she examines a salvaged artifact. The energy patterns within these ruins are unlike anything recorded, hinting at distortions of space-time itself. You now must navigate a strange region where time seems to warp and flow irregularly.",
-                            "shipHealthChange": -10,
-                            "treasureChange": 300,
-                            "crewHealthChange": 0,
-                            "nextId": "act2_enc_temporal_distortion"
-                        }
-                    },
-                    {
-                        "text": "Attempt a high-power scan from orbit to learn about the ruins without risking a landing.",
-                        "outcome": {
-                            "image": "outcome/act2_enc_ancient_ruins_outcome2.png",
-                            "text": "Your long-range scans yield fascinating but inconclusive data. Dr. Aris deduces the ruins belong to a long-extinct species, but the valuable artifacts remain hidden. You gain knowledge but no material wealth. <br><br>'Frustrating,' Aris mutters, 'so much potential, lost to time.' The scans do, however, reveal unusual energy fluctuations just beyond the ruins – a strange region where time itself seems to warp and flow irregularly.",
-                            "shipHealthChange": 0,
-                            "treasureChange": 0,
-                            "crewHealthChange": 0,
-                            "nextId": "act2_enc_temporal_distortion"
-                        }
-                    }
-                ]
-            },
-            {
-                "id": "act2_enc_temporal_distortion",
-                "displayName": "Temporal Distortion Field",
-                "image": "encounters/act2_enc_temporal_distortion.png",
-                "scenario": "You enter a strange region of space where time seems to warp and flow irregularly. Sensors flicker, and the crew reports disorientation. It's beautiful but dangerous.",
-                "options": [
-                    {
-                        "text": "Proceed slowly and cautiously, attempting to navigate the distortions without disturbing them.",
-                        "outcome": {
-                            "image": "outcome/act2_enc_temporal_distortion_outcome1.png",
-                            "text": "Zephyr guides the ship with extreme care, but the unpredictable nature of the field causes minor hull stress and disorients the crew, impacting their morale. <br><br>'Feels like we're sailing through treacle,' Jax grumbles. You eventually emerge on the other side, shaken but intact. The path ahead leads you towards a heavily armed patrol checkpoint, where your reputation will once again precede you.",
-                            "shipHealthChange": -5,
-                            "treasureChange": 0,
-                            "crewHealthChange": -10,
-                            "nextId": "act2_enc_hostile_patrol_check"
-                        }
-                    },
-                    {
-                        "text": "Attempt to exploit the distortion, hoping for a shortcut through space.",
-                        "outcome": {
-                            "image": "outcome/act2_enc_temporal_distortion_outcome2.png",
-                            "text": "You take a dangerous gamble, pushing your ship into the heart of the distortion. For a terrifying moment, space-time twists around you, then violently snaps back. You've skipped a significant portion of your journey, but the sudden jump inflicts heavy stress on your vessel and crew, and you arrive directly at the STAR-HEART GEM's guardians.",
-                            "shipHealthChange": -15,
-                            "treasureChange": 0,
-                            "crewHealthChange": -15,
-                            "specialEffect": "skippedSegment",
-                            "nextId": "act3_enc_guardian_sentinels"
-                        }
-                    },
-                    {
-                        "text": "Have Dr. Aris analyze the distortion, seeking scientific understanding.",
-                        "outcome": {
-                            "image": "outcome/act2_enc_temporal_distortion_outcome_temporal_data.png",
-                            "text": "Dr. Aris bravely stays at her console, gathering vast amounts of complex temporal data before the field dissipates. The effort is taxing on the crew, but the insights gained into space-time manipulation could be invaluable for navigating ancient, complex energy fields. <br><br>'This changes everything we thought we knew about space-time,' Aris marvels, eyes wide. The data collected will help you understand the deeper mysteries of the Whispering Wastes as you approach the final checkpoint, manned by the Rival Faction.",
-                            "shipHealthChange": 0,
-                            "treasureChange": 200,
-                            "crewHealthChange": -5,
-                            "specialEffect": "temporalDataAcquired",
-                            "nextId": "act2_enc_hostile_patrol_check"
-                        }
-                    }
-                ]
-            },
-            {
-                "id": "act2_enc_hostile_patrol_check",
-                "displayName": "Patrol Checkpoint",
-                "image": "encounters/act2_enc_hostile_patrol_check.png",
-                "scenario": "A heavily armed patrol checkpoint, controlled by the Rival Faction, looms ahead. They demand identification and a detailed manifest. Your previous interactions with them will dictate their response.",
-                "options": [
-                    {
-                        "text": "Attempt to bluff your way through the checkpoint.",
-                        "outcome": {
-                            "image": "outcome/act2_enc_hostile_patrol_check_outcome1.png",
-                            "text": "Captain Eva's confident facade and Zephyr's clever transponder spoofing work flawlessly. The patrol waves you through, none the wiser. <br><br>'Clean as a whistle,' Zephyr winks. You pass without incident or cost, and the path to the very Heart of the Nebula is now clear.",
-                            "shipHealthChange": 0,
-                            "treasureChange": 0,
-                            "crewHealthChange": 0,
-                            "nextId": "act3_enc_nebula_heart"
-                        },
-                        "condition": {
-                            "type": "specialEffect",
-                            "flag": "rivalFactionEncountered",
-                            "comparison": "not_set"
-                        }
-                    },
-                    {
-                        "text": "Prepare for evasive maneuvers and a potential fight.",
-                        "outcome": {
-                            "image": "outcome/act2_enc_hostile_patrol_check_outcome2.png",
-                            "text": "Recognizing you instantly, the Rival Faction opens fire without warning. You're forced into a desperate dogfight, taking heavy hits before breaking free. You escape, but the ship is battered, and the crew is shaken. <br><br>'They don't forgive easily,' Eva sighs. You've broken through, but the battle leaves you vulnerable for the final push to the Nebula's Heart.",
-                            "shipHealthChange": -25,
-                            "treasureChange": 0,
-                            "crewHealthChange": -10,
-                            "nextId": "act3_enc_nebula_heart"
-                        },
-                        "condition": {
-                            "type": "specialEffect",
-                            "flag": "rivalFactionEncountered",
-                            "comparison": "set"
-                        }
-                    },
-                    {
-                        "text": "Attempt to pay them off for safe passage.",
-                        "outcome": {
-                            "image": "outcome/act2_enc_hostile_patrol_check_outcome3.png",
-                            "text": "You transmit a large sum of credits to the patrol. They accept the bribe with a curt nod and allow you to pass, albeit with a lingering sense of resentment. <br><br>'Money talks, even out here,' Jax mutters. A costly but peaceful resolution. The path to the Nebula's Heart is now open, though your coffers are lighter.",
-                            "shipHealthChange": 0,
-                            "treasureChange": -150,
-                            "crewHealthChange": 0,
-                            "nextId": "act3_enc_nebula_heart"
-                        },
-                        "condition": {
-                            "type": "treasure",
-                            "value": 150,
-                            "comparison": "greaterThanOrEqual"
-                        }
-                    },
-                    {
-                        "text": "Attempt to pay them off for safe passage.",
-                        "outcome": {
-                            "image": "outcome/act2_enc_hostile_patrol_check_outcome_fail.png",
-                            "text": "You attempt to offer a bribe, but your funds are insufficient. The patrol scoffs and opens fire, forcing you into a brutal, damaging fight. <br><br>'You've got nothing we want!' a voice roars. You are forced to fight your way through the blockade, taking heavy damage to ship and crew. A painful reminder that some debts cannot be bought off. The path to the Nebula's Heart is now open, but you're in a perilous state.",
-                            "shipHealthChange": -35,
-                            "treasureChange": 0,
-                            "crewHealthChange": -15,
-                            "nextId": "act3_enc_nebula_heart"
-                        },
-                        "condition": {
-                            "type": "treasure",
-                            "value": 150,
-                            "comparison": "lessThan"
-                        }
-                    }
-                ]
-            }
-        ],
-        "summary": "The Whispering Wastes tested your limits. You've overcome its perils and dilemmas, drawing closer to the STAR-HEART GEM. Your final challenge awaits in the Heart of the Nebula, home to its ultimate guardians. <br><br>Prepare your crew and ship, for the trials ahead will be unlike any you've faced before. The Nebula's Heart is within reach, but it will not yield its secrets easily."
-    },
-    {
-        "title": "Act 3: Heart of the Nebula",
-        "actDescription": "You've reached the Heart of the Nebula, source of the STAR-HEART GEM's power. Ancient guardians stand between you and your prize. This is your ultimate trial.",
-        "encounters": [
-            {
-                "id": "act3_enc_nebula_heart",
-                "displayName": "The Nebula's Calming Heart",
-                "image": "encounters/act3_enc_nebula_heart.png",
-                "scenario": "You drift into a serene, almost silent region of the nebula. The swirling cosmic dust here emits a soft, comforting glow. Your sensors indicate unusually stable energy fields. <br><br>It feels like a moment of peace before the final push.",
-                "options": [
-                    {
-                        "text": "Allow the crew a brief moment of respite and reflection.",
-                        "outcome": {
-                            "image": "outcome/act3_enc_nebula_heart_outcome1.png",
-                            "text": "The quiet solitude calms frayed nerves. Your crew emerges from the brief pause refreshed and reinvigorated, ready for the challenges ahead. Eva gives a rare, small smile. <br><br>'We needed that, Captain. We're as ready as we'll ever be for what's next.' The path ahead reveals three massive, silent constructs—the ancient Guardian Sentinels.",
-                            "shipHealthChange": 0,
-                            "treasureChange": 0,
-                            "crewHealthChange": 10,
-                            "nextId": "act3_enc_guardian_sentinels"
-                        }
-                    },
-                    {
-                        "text": "Attempt to siphon the stable energy fields for a temporary ship boost.",
-                        "outcome": {
-                            "image": "outcome/act3_enc_nebula_heart_outcome2.png",
-                            "text": "Jax carefully extends energy conduits into the stable fields. You absorb a burst of pure energy, giving your ship a temporary surge of power and minor repairs. <br><br>'Free energy, Captain! Just what we needed for the grand finale!' Jax shouts, already integrating the boost. Your ship hums with renewed vigor. Ahead, the path to the STAR-HEART GEM is blocked by three massive, silent constructs—the legendary Guardian Sentinels.",
-                            "shipHealthChange": 5,
-                            "treasureChange": 0,
-                            "crewHealthChange": 0,
-                            "specialEffect": "finalPowerSurge",
-                            "nextId": "act3_enc_guardian_sentinels"
-                        }
-                    },
-                    {
-                        "text": "Analyze the unique energy signature for potential valuable data.",
-                        "outcome": {
-                            "image": "outcome/act3_enc_nebula_heart_outcome3.png",
-                            "text": "Dr. Aris quickly scans the unique energy. She gathers enough data to potentially sell for 50 credits, but the delicate analysis means less focus on preparing for the next challenge. <br><br>'Fascinating... but time is a factor,' Aris murmurs, already saving the complex readouts. Your brief moment of scientific discovery done, your sensors now lock onto three massive, silent constructs directly blocking your path: the ancient Guardian Sentinels.",
-                            "shipHealthChange": 0,
-                            "treasureChange": 50,
-                            "crewHealthChange": 0,
-                            "nextId": "act3_enc1"
-                        }
-                    }
-                ]
-            },
-            {
-                "id": "act3_enc_guardian_sentinels",
-                "displayName": "Ancient Guardian Sentinels",
-                "image": "encounters/act3_enc_guardian_sentinels.png",
-                "scenario": "Your path to the STAR-HEART GEM is blocked by three massive, silent constructs. They radiate an ancient, protective energy, clearly designed to repel intruders. These are the legendary Guardian Sentinels.",
-                "options": [
-                    {
-                        "text": "Attempt a stealthy bypass, relying on Zephyr's intricate maneuvering.",
-                        "outcome": {
-                            "image": "outcome/act3_enc_guardian_sentinels_outcome1.png",
-                            "text": "Zephyr attempts to slip past, but the sentinels' sensors are too advanced, their ancient programming unyielding. They detect your subtle movements and unleash a volley of energy blasts, forcing you to engage head-on. <br><br>'They're faster than they look, Captain!' Zephyr curses, bracing for impact. You're now in a direct confrontation with the guardians, with your ship already taking hits.",
-                            "shipHealthChange": -20,
-                            "treasureChange": 0,
-                            "crewHealthChange": -10,
-                            "nextId": "act3_enc1"
-                        },
-                        "condition": {
-                            "type": "crewHealth",
-                            "value": 70,
-                            "comparison": "lessThan"
-                        }
-                    },
-                    {
-                        "text": "Attempt a stealthy bypass, relying on Zephyr's intricate maneuvering.",
-                        "outcome": {
-                            "image": "outcome/act3_enc_guardian_sentinels_outcome2.png",
-                            "text": "Your crew, bolstered by high morale and a shared determination, executes Zephyr's complex maneuvers flawlessly. You slip past the sentinels undetected, bypassing their formidable defenses without a scratch. <br><br>'Barely a whisper,' Zephyr breathes, a hint of pride in his voice. A testament to your team's cohesion, and the path to the STAR-HEART GEM's chamber is now open.",
-                            "shipHealthChange": 0,
-                            "treasureChange": 0,
-                            "crewHealthChange": 0,
-                            "nextId": "act3_enc1"
-                        },
-                        "condition": {
-                            "type": "crewHealth",
-                            "value": 70,
-                            "comparison": "greaterThanOrEqual"
-                        }
-                    },
-                    {
-                        "text": "Attempt to negotiate with the sentinels using the ancient data.",
-                        "outcome": {
-                            "image": "outcome/act3_enc_guardian_sentinels_outcome3.png",
-                            "text": "You transmit the scientific data acquired earlier—the resonant frequencies of the crystalline leviathan, the bio-mechanical schematics, or insights into cosmic erosion. The sentinels pause, their energy signatures flickering in response. A complex data exchange occurs, and then, slowly, they power down, allowing you to pass. <br><br>'Unbelievable,' Aris whispers, 'our research has paid off magnificently!' The guardians are dormant, and the path to the STAR-HEART GEM's chamber is clear.",
-                            "shipHealthChange": 0,
-                            "treasureChange": 0,
-                            "crewHealthChange": 0,
-                            "nextId": "act3_enc1"
-                        },
-                        "condition": {
-                            "type": "specialEffect",
-                            "flag": "scientificDataAcquired",
-                            "comparison": "set"
-                        }
-                    },
-                    {
-                        "text": "Engage the sentinels directly, focusing fire on their core reactors.",
-                        "outcome": {
-                            "image": "outcome/act3_enc_guardian_sentinels_outcome4.png",
-                            "text": "You unleash a full assault. The sentinels are tough, returning fire with devastating accuracy. <br><br>'Their shields are holding!' Eva shouts, as alarms blare. It's a brutal, drawn-out battle that leaves your ship heavily damaged and your crew exhausted, but you eventually destroy them, clearing the path. Your ship creaks, but the way to the STAR-HEART GEM's chamber is finally open.",
-                            "shipHealthChange": -40,
-                            "treasureChange": 0,
-                            "crewHealthChange": -15,
-                            "nextId": "act3_enc1"
-                        }
-                    }
-                ]
-            },
-            {
-                "id": "act3_enc1",
-                "displayName": "STAR-HEART GEM Chamber",
-                "image": "encounters/act3_enc1.png",
-                "scenario": "You've reached the suspected location of the STAR-HEART GEM. A massive, ancient alien structure looms in the void, radiating immense energy. It's protected by an energy shield.",
-                "options": [
-                    {
-                        "text": "Have Jax meticulously reconfigure the conduits to safely disable the defenses and claim the gem.",
-                        "outcome": {
-                            "image": "outcome/act3_enc1_outcome1.png",
-                            "text": "Jax, grumbling but focused, works with incredible precision. One by one, the conduits disengage, and the STAR-HEART GEM's protective field dissipates without incident. You claim the gem successfully and intact, a true testament to his engineering prowess. You also manage to siphon off a small amount of residual energy, slightly patching your ship's hull. <br><br>'Got it, Captain! Clean as a whistle!' Jax grins, wiping grease from his brow. But no sooner is the gem secured than the chamber begins to groan and tear itself apart!",
-                            "shipHealthChange": 10,
-                            "treasureChange": 500,
-                            "crewHealthChange": 0,
-                            "nextId": "act3_enc2"
-                        }
-                    },
-                    {
-                        "text": "Attempt to overload the central conduit, hoping to short-circuit the entire defense system.",
-                        "outcome": {
-                            "image": "outcome/act3_enc1_outcome2.png",
-                            "text": "You attempt to overload the system, but the ancient technology resists your brute-force approach. The conduits surge violently, triggering a localized energy discharge that severely damages the surrounding chamber and your ship. You manage to grab the gem, but at a heavy cost. <br><br>'That was... less than ideal,' Eva mutters, surveying the damage. The structure around you now groans, threatening to collapse at any moment!",
-                            "shipHealthChange": -30,
-                            "treasureChange": 500,
-                            "crewHealthChange": -10,
-                            "nextId": "act3_enc2"
-                        }
-                    },
-                    {
-                        "text": "Use the unique resonant frequency discovered earlier to destabilize the shield.",
-                        "outcome": {
-                            "image": "outcome/act3_enc1_outcome3.png",
-                            "text": "Remembering the crystalline organism's Fibonacci frequency from the nebula's depths, Zephyr modulates your shields. The ancient defense system flickers, unable to cope with the unexpected resonance, and collapses. You claim the gem with minimal effort and no damage, a true tactical triumph! <br><br>'Like a key in a lock, Captain!' Zephyr cheers. The chamber's defenses are down, but alarms are now blaring, and an emergency escape route flashes on your navigation.",
-                            "shipHealthChange": 0,
-                            "treasureChange": 550,
-                            "crewHealthChange": 0,
-                            "nextId": "act3_enc_escape_route"
-                        },
-                        "condition": {
-                            "type": "specialEffect",
-                            "flag": "shipShieldBoost",
-                            "comparison": "set"
-                        }
-                    },
-                    {
-                        "text": "Analyze the shield's weak points before proceeding.",
-                        "outcome": {
-                            "image": "outcome/act3_enc1_outcome4.png",
-                            "text": "Dr. Aris applies her deep analytical insight, meticulously scanning the shield's energy patterns. She identifies a single, fluctuating conduit. You target it with precision fire, disabling the shield efficiently but draining a lot of energy. <br><br>'A surgical strike,' Aris confirms, her eyes glued to the data. You secure the gem. With the shield down, the ancient structure around you begins to groan as alarms blare.",
-                            "shipHealthChange": -5,
-                            "treasureChange": 500,
-                            "crewHealthChange": 0,
-                            "nextId": "act3_enc2"
-                        },
-                        "condition": {
-                            "type": "specialEffect",
-                            "flag": "arisAnalyticalInsight",
-                            "comparison": "set"
-                        }
-                    },
-                    {
-                        "text": "Analyze the shield's temporal distortions, seeking a bypass.",
-                        "outcome": {
-                            "image": "outcome/act3_enc1_outcome_temporal.png",
-                            "text": "Leveraging the complex temporal data you acquired from the Whispering Wastes, Dr. Aris identifies subtle temporal distortions within the shield. By precisely manipulating your ship's temporal regulators, you create a momentary phase shift, allowing you to slip through the shield and claim the gem with remarkable ease, leaving the system largely intact. <br><br>'A ghost in the machine,' Aris marvels. The Gem is yours, almost effortlessly. With the defenses subtly bypassed, alarms blare, and an emergency escape route appears, narrow but direct.",
-                            "shipHealthChange": 0,
-                            "treasureChange": 600,
-                            "crewHealthChange": 0,
-                            "nextId": "act3_enc_escape_route"
-                        },
-                        "condition": {
-                            "type": "specialEffect",
-                            "flag": "temporalDataAcquired",
-                            "comparison": "set"
-                        }
-                    }
-                ]
-            },
-            {
-                "id": "act3_enc2",
-                "displayName": "Collapsing Chamber Escape",
-                "image": "encounters/act3_enc2.png",
-                "scenario": "As you secure the STAR-HEART GEM, the chamber begins to collapse! The ancient structure, weakened by your presence, is tearing itself apart. You need to escape immediately, but debris is falling rapidly, threatening to crush the ship.",
-                "options": [
-                    {
-                        "text": "Zephyr attempts a desperate, high-speed evasive maneuver through the collapsing structure.",
-                        "outcome": {
-                            "image": "outcome/act3_enc2_outcome1.png",
-                            "text": "Zephyr pushes the ship to its absolute limits, performing gravity-defying rolls and dives. Debris scrapes past your hull, sparking and groaning, but you manage to burst free of the collapsing structure just as it implodes. <br><br>'That was too close!' Zephyr yells, his hands still trembling on the controls. A truly breathtaking escape, proving Zephyr's unparalleled piloting. You've made it out, STAR-HEART GEM in hand, but a formidable, massive alien dreadnought is waiting.",
-                            "shipHealthChange": -10,
-                            "treasureChange": 0,
-                            "crewHealthChange": 0,
-                            "nextId": "act3_enc3"
-                        }
-                    },
-                    {
-                        "text": "Captain Eva orders a defensive retreat, attempting to shield the ship with remaining energy while moving slowly.",
-                        "outcome": {
-                            "image": "outcome/act3_enc2_outcome2.png",
-                            "text": "Captain Eva activates defensive protocols, but the sheer force of the collapsing structure is overwhelming. Heavy debris rains down, severely impacting your ship's shields and hull. <br><br>'Hold steady!' Eva commands through gritted teeth. You escape, but the ship is a battered wreck, and the crew is shaken. You've made it out, STAR-HEART GEM in hand, but a formidable, massive alien dreadnought is waiting.",
-                            "shipHealthChange": -35,
-                            "treasureChange": 0,
-                            "crewHealthChange": -5,
-                            "nextId": "act3_enc3"
-                        }
-                    }
-                ]
-            },
-            {
-                "id": "act3_enc_escape_route",
-                "displayName": "Emergency Escape Route",
-                "image": "encounters/act3_enc_escape_route.png",
-                "scenario": "Your efficient gem retrieval has left the chamber somewhat stable, but alarms blare. An emergency escape route, narrow but direct, flashes on your navigation. It seems less dangerous than the main path.",
-                "options": [
-                    {
-                        "text": "Take the emergency escape route, relying on Zephyr's precision piloting.",
-                        "outcome": {
-                            "image": "outcome/act3_enc_escape_route_outcome1.png",
-                            "text": "Zephyr expertly navigates the tight corridor, narrowly avoiding energy traps and collapsing sections. You emerge safely, having bypassed a more chaotic escape. Your ship is untouched, but the shortcut leads you to a less advantageous position for the final confrontation. <br><br>'Sneaky, Captain, very sneaky!' Zephyr whispers. You've made it out, STAR-HEART GEM in hand, but the massive alien dreadnought is waiting. Your escape route has put you in a slightly compromised, but perhaps unexpected, flanking position.",
-                            "shipHealthChange": 0,
-                            "treasureChange": 0,
-                            "crewHealthChange": 0,
-                            "nextId": "act3_enc3_flanked"
-                        }
-                    },
-                    {
-                        "text": "Stick to the main path, using your ship's full power to blast through any remaining obstacles.",
-                        "outcome": {
-                            "image": "outcome/act3_enc_escape_route_outcome2.png",
-                            "text": "You blast your way through the crumbling chamber. While effective, the sheer force of the explosions causes some structural stress to your hull. <br><br>'No time for finesse!' Jax shouts over the roar of your weapons. You exit onto the main approach, ready for the final battle. You've made it out, STAR-HEART GEM in hand, but a formidable, massive alien dreadnought is waiting.",
-                            "shipHealthChange": -10,
-                            "treasureChange": 0,
-                            "crewHealthChange": 0,
-                            "nextId": "act3_enc3"
-                        }
-                    }
-                ]
-            },
-            {
-                "id": "act3_enc3",
-                "displayName": "Dreadnought Final Battle",
-                "image": "encounters/act3_enc3.png",
-                "scenario": "You've made it out, STAR-HEART GEM in hand, but a formidable, massive alien dreadnought is waiting. It's clearly here for the gem, and its weapons are already charged. This is the final stand.",
-                "options": [
-                    {
-                        "text": "Initiate a full-scale assault, focusing fire on key weak points identified by Aris, and relying on Eva's tactical commands.",
-                        "outcome": {
-                            "image": "outcome/act3_enc3_outcome1.png",
-                            "text": "Captain Eva barks orders, directing concentrated fire at vulnerabilities Dr. Aris pinpointed. It's a brutal, drawn-out battle. Your ship takes heavy hits, and the crew fights valiantly, but you manage to cripple the dreadnought, forcing its retreat or destruction. <br><br>'Victory, Captain! But at what cost...' Eva surveys the battered bridge. A costly but decisive victory! Your epic odyssey is complete. Your legend, and your crew's fate, is now etched into the stars.",
-                            "shipHealthChange": -50,
-                            "treasureChange": 0,
-                            "crewHealthChange": -20,
-                            "nextId": null
-                        }
-                    },
-                    {
-                        "text": "Attempt a suicidal distraction maneuver, allowing Zephyr to jump to hyperspace while Jax tries to keep their shields occupied.",
-                        "outcome": {
-                            "image": "outcome/act3_enc3_outcome2.png",
-                            "text": "With Jax drawing enemy fire and Zephyr pushing the Jump Drive beyond safe limits, you make a daring escape. The dreadnought is momentarily confused, allowing you to slip away into hyperspace. The ship sustains extreme stress damage, and Jax's makeshift diversion causes internal explosions, but you live to fight another day. <br><br>'We're out, Captain! We're actually out!' Zephyr yells with a mix of relief and terror. The STAR-HEART GEM pulses, your prize secured, but the scars of the journey remain. Your epic odyssey is complete. Your legend, and your crew's fate, is now etched into the stars.",
-                            "shipHealthChange": -40,
-                            "treasureChange": 0,
-                            "crewHealthChange": -10,
-                            "nextId": null
-                        }
-                    },
-                    {
-                        "text": "Attempt a suicidal distraction maneuver, bolstered by Jax's efficiency.",
-                        "outcome": {
-                            "image": "outcome/act3_enc3_outcome2_jax.png",
-                            "text": "Jax's enhanced efficiency shines through. His diversion is flawless, drawing enemy fire perfectly as Zephyr executes the Jump Drive. The ship still takes stress damage, but Jax's improvements mean the internal systems weather the strain much better. <br><br>'Calculated risk, Captain, calculated risk!' Jax grins, despite the smoke. A risky but expertly executed escape! The STAR-HEART GEM pulses, your prize secured, and your legend cemented. Your epic odyssey is complete. Your legend, and your crew's fate, is now etched into the stars.",
-                            "shipHealthChange": -25,
-                            "treasureChange": 0,
-                            "crewHealthChange": -5,
-                            "nextId": null
-                        },
-                        "condition": {
-                            "type": "specialEffect",
-                            "flag": "jaxEfficiencyBoost",
-                            "comparison": "set"
-                        }
-                    },
-                    {
-                        "text": "Attempt to disable their Jump Drive before engaging.",
-                        "outcome": {
-                            "image": "outcome/act3_enc3_outcome3.png",
-                            "text": "You dedicate a significant portion of your ship's remaining power to a targeted Jump Drive disruptor. The dreadnought's engines sputter, leaving it vulnerable. You engage at close range, winning a decisive victory with less damage, but your ship feels drained. <br><br>'They're crippled! Fire at will!' Eva commands. A cleaner victory, achieved through precision. Your epic odyssey is complete. Your legend, and your crew's fate, is now etched into the stars.",
-                            "shipHealthChange": -20,
-                            "treasureChange": 0,
-                            "crewHealthChange": 0,
-                            "nextId": null
-                        },
-                        "condition": {
-                            "type": "shipHealth",
-                            "value": 70,
-                            "comparison": "greaterThanOrEqual"
-                        }
-                    },
-                    {
-                        "text": "Attempt to disable their Jump Drive before engaging.",
-                        "outcome": {
-                            "image": "outcome/act3_enc3_outcome_fail.png",
-                            "text": "You attempt the Jump Drive disruptor, but your ship lacks the power. The attempt fails, and the dreadnought retaliates with devastating fire. <br><br>'System critical, Captain!' Jax screams. You're overwhelmed. This last act of defiance costs you dearly, pushing your ship and crew to their breaking point, but the Gem is secured... barely. Your epic odyssey is complete. Your legend, and your crew's fate, is now etched into the stars.",
-                            "shipHealthChange": -60,
-                            "treasureChange": 0,
-                            "crewHealthChange": -25,
-                            "nextId": null
-                        },
-                        "condition": {
-                            "type": "shipHealth",
-                            "value": 70,
-                            "comparison": "lessThan"
-                        }
-                    }
-                ]
-            },
-            {
-                "id": "act3_enc3_flanked",
-                "displayName": "Dreadnought Flanked Battle",
-                "image": "encounters/act3_enc3_flanked.png",
-                "scenario": "You've made it out through the emergency route, STAR-HEART GEM in hand, but the massive alien dreadnought is waiting. Your escape route has put you in a slightly compromised, but perhaps unexpected, position.",
-                "options": [
-                    {
-                        "text": "Initiate a surprise attack from your flanking position, targeting their less-shielded rear.",
-                        "outcome": {
-                            "image": "outcome/act3_enc3_flanked_outcome1.png",
-                            "text": "Captain Eva barks orders, exploiting your flanking position. The dreadnought is caught off guard, taking heavy damage to its vulnerable rear. The battle is quicker and less damaging to your ship, but the enemy still retaliates fiercely. <br><br>'We hit 'em where it hurts!' Eva shouts. A decisive victory, securing the Gem and your escape. Your epic odyssey is complete. Your legend, and your crew's fate, is now etched into the stars.",
-                            "shipHealthChange": -30,
-                            "treasureChange": 0,
-                            "crewHealthChange": -10,
-                            "nextId": null
-                        }
-                    },
-                    {
-                        "text": "Attempt to negotiate for safe passage, leveraging the element of surprise.",
-                        "outcome": {
-                            "image": "outcome/act3_enc3_flanked_outcome2.png",
-                            "text": "You hail the dreadnought, demanding safe passage. The pirate lord, startled by your sudden appearance from an unexpected angle, agrees to let you pass for a substantial sum of credits. <br><br>'Consider this a... tax,' the Pirate Lord growls. A costly but bloodless escape, the STAR-HEART GEM yours without further combat. Your epic odyssey is complete. Your legend, and your crew's fate, is now etched into the stars.",
-                            "shipHealthChange": 0,
-                            "treasureChange": -200,
-                            "crewHealthChange": 0,
-                            "nextId": null
-                        },
-                        "condition": {
-                            "type": "treasure",
-                            "value": 200,
-                            "comparison": "greaterThanOrEqual"
-                        }
-                    },
-                    {
-                        "text": "Attempt to negotiate for safe passage.",
-                        "outcome": {
-                            "image": "outcome/act3_enc3_flanked_outcome_fail.png",
-                            "text": "You attempt to negotiate, but when they learn you lack the funds, they engage, unleashing their full fury. <br><br>'Fools! You thought you could trick us?' the Pirate Lord snarls. Caught off guard, you take massive damage. This was a costly gamble, and you're left battered. <br><br>Your epic odyssey is complete. Your legend, and your crew's fate, is now etched into the stars.",
-                            "shipHealthChange": -50,
-                            "treasureChange": 0,
-                            "crewHealthChange": -15,
-                            "nextId": null
-                        },
-                        "condition": {
-                            "type": "treasure",
-                            "value": 200,
-                            "comparison": "lessThan"
-                        }
-                    }
-                ]
-            }
-        ],
-        "summary": "The Heart of the Nebula demanded everything. You've faced its defenses and guardians, securing the Gem. Your epic odyssey is complete. Your legend, and your crew's fate, is now etched into the stars. <br><br>As you drift away, the STAR-HEART GEM pulses with a soft, warm light, a symbol of your triumph and the trials you've overcome. The crew gathers on the bridge, weary but victorious, ready to chart a new course through the cosmos."
-    }
-]
-
-
-
+                            "
