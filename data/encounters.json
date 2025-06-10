@@ -136,6 +136,17 @@
                 "scenario": "You've discovered an ancient, sealed vault, its surface covered in glowing, shifting glyphs that hum with latent power. This isn't a simple lock; it's an alien interface, demanding a specific sequence or understanding. A faint energy drain indicates it's slowly siphoning your ship's power.",
                 "options": [
                     {
+                        "text": "Attempt to brute-force the vault, sending random energy pulses.",
+                        "outcome": {
+                            "image": "outcome/puzzle_glyph_brute_force_fail.png",
+                            "text": "The vault reacts violently to your erratic pulses, generating a powerful electromagnetic feedback. Your ship's systems flicker, and some crew are dazed. 'That was unwise, Captain!' Aris warns. The energy drain continues.",
+                            "shipHealthChange": -25,
+                            "treasureChange": 0,
+                            "crewHealthChange": -15,
+                            "nextId": "act1_puzzle_enigmatic_glyphs"
+                        }
+                    },
+                    {
                         "text": "Have Aris meticulously analyze the glyph patterns and energy fluctuations.",
                         "outcome": {
                             "image": "outcome/puzzle_glyph_clue_aris.png",
@@ -158,21 +169,36 @@
                             "specialEffect": "clue_voltage_13_1_found",
                             "nextId": "act1_puzzle_enigmatic_glyphs"
                         }
-                    },
+                    },                    
                     {
                         "text": "Order the crew to search the surrounding derelict interior for any guiding inscriptions.",
                         "outcome": {
                             "image": "outcome/puzzle_glyph_clue_search.png",
-                            "text": "You find a hidden, faded schematic etched into the floor, showing a complex series of inputs. One section is highlighted: 'First the **Frequency**, then the **Voltage**.' This defines the input order.",
+                            "text": "You find a hidden, faded schematic etched into the floor, showing a complex series of inputs. One section is highlighted: 'First the **Frequency**, then the **Voltage**.'",
                             "shipHealthChange": 0,
                             "treasureChange": 0,
                             "crewHealthChange": 0,
                             "specialEffect": "clue_order_freq_volt_found",
                             "nextId": "act1_puzzle_enigmatic_glyphs"
                         }
+                    },                    {
+                        "text": "Input the sequence '13.1 59' into the vault's interface.",
+                        "outcome": {
+                            "image": "outcome/puzzle_glyph_wrong_order.png",
+                            "text": "The glyphs flash angrily, and a painful jolt of feedback surges through the ship's systems. 'Wrong sequence!' Jax shouts. The energy drain intensifies slightly. You need more information or to re-evaluate what you know.",
+                            "shipHealthChange": -15,
+                            "treasureChange": 0,
+                            "crewHealthChange": -5,
+                            "nextId": "act1_puzzle_enigmatic_glyphs"
+                        },
+                        "condition": {
+                            "type": "allSpecialEffects",
+                            "flags": ["clue_glyph_59_found", "clue_voltage_13_1_found"],
+                            "comparison": "set"
+                        }
                     },
                     {
-                        "text": "Input the sequence '59 13.1' (Frequency then Voltage) into the vault's interface.",
+                        "text": "Input the sequence '59 13.1' into the vault's interface.",
                         "outcome": {
                             "image": "outcome/puzzle_glyph_success.png",
                             "text": "The glyphs glow brightly, then the vault hisses open, revealing a treasure trove of ancient alien technology and rare materials. Your ship's systems stabilize. 'Unbelievable!' Aris marvels. The energy drain stops, and the path to the energy flare is clear.",
@@ -183,33 +209,8 @@
                         },
                         "condition": {
                             "type": "allSpecialEffects",
-                            "flags": ["clue_glyph_59_found", "clue_voltage_13_1_found", "clue_order_freq_volt_found"]
-                        }
-                    },
-                    {
-                        "text": "Input the sequence '13.1 59' (Voltage then Frequency).",
-                        "outcome": {
-                            "image": "outcome/puzzle_glyph_wrong_order.png",
-                            "text": "The glyphs flash angrily, and a painful jolt of feedback surges through the ship's systems. 'Wrong sequence!' Jax shouts. The energy drain intensifies slightly. You need more information or to re-evaluate what you know.",
-                            "shipHealthChange": -15,
-                            "treasureChange": 0,
-                            "crewHealthChange": -5,
-                            "nextId": "act1_puzzle_enigmatic_glyphs"
-                        },
-                        "condition": {
-                            "type": "anySpecialEffect",
-                            "flags": ["clue_glyph_59_found", "clue_voltage_13_1_found"]
-                        }
-                    },
-                    {
-                        "text": "Attempt to brute-force the vault, sending random energy pulses.",
-                        "outcome": {
-                            "image": "outcome/puzzle_glyph_brute_force_fail.png",
-                            "text": "The vault reacts violently to your erratic pulses, generating a powerful electromagnetic feedback. Your ship's systems flicker, and some crew are dazed. 'That was unwise, Captain!' Aris warns. The energy drain continues.",
-                            "shipHealthChange": -25,
-                            "treasureChange": 0,
-                            "crewHealthChange": -15,
-                            "nextId": "act1_puzzle_enigmatic_glyphs"
+                            "flags": ["clue_glyph_59_found", "clue_voltage_13_1_found"],
+                            "comparison": "set"
                         }
                     },
                     {
@@ -420,7 +421,139 @@
                             "crewHealthChange": 0,
                             "nextId": "act1_enc3"
                         }
+                    },                   
+                    {
+                        "text": "Approach the stranger in the corner, who seems to have information.",
+                        "outcome": {
+                            "image": "outcome/act1_enc_smugglers_den_riddle.png",
+                            "text": "The stranger leans in, his voice low. <br><br>'I know what you seek. Solve my riddle, and I'll tell you more.' He gestures to a table with four relics, each glowing faintly. 'Arrange them in the correct order, and the knowledge is yours.'",
+                            "shipHealthChange": 0,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "nextId": "smuggler_riddle"
+                        },
+                        "condition": {
+                            "type": "specialEffect",
+                            "flag": "smugglerRiddleSolved",
+                            "comparison": "notSet"
+                        }
                     }
+                ]
+            },            
+            {
+                "id": "smuggler_riddle",
+                "displayName": "Riddle",
+                "image": "encounters/smuggler_riddle.png",
+                "scenario": "Four relics await in silent array,<br>Each from a soul who shaped the way.<br><br>A crystal core of knowledge deep,<br>A star compass to chart the sweep.<br>Etherflight goggles for paths unseen,<br>A runed spanner to mend machine.<br><br>But wisdom lies in knowing the tale —<br>Set them in order, or surely fail.<br><br>What order tells the story true?<br>The fate of the voyage depends on you.",
+                "options": [
+                    {
+                        "text": "Inspect the crystal core.",
+                        "outcome": {
+                            "image": "outcome/smuggler_riddle_crystal.png",
+                            "text": "The crystal core glows faintly, resonating with ancient knowledge. <br><br>'This must be the first relic,' Aris notes. 'It resembles some of the data we've already found.'",
+                            "shipHealthChange": 0,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "specialEffect": "crystalCoreFound",
+                            "nextId": "smuggler_riddle"
+                        }
+                    },
+                    {
+                        "text": "Inspect the star compass.",
+                        "outcome": {
+                            "image": "outcome/smuggler_riddle_compass.png",
+                            "text": "The star compass spins wildly, then settles on a distant point. <br><br>'This must be the second relic,' Zephyr says. 'Hmm... Shiny.'",
+                            "shipHealthChange": 0,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "specialEffect": "starCompassFound",
+                            "nextId": "smuggler_riddle"
+                        }
+                    },
+                    {
+                        "text": "Inspect the goggles.",
+                        "outcome": {
+                            "image": "outcome/smuggler_riddle_goggles.png",
+                            "text": "The etherflight goggles shimmer, revealing hidden paths in the ether. <br><br>'This must be the third relic,' Zephyr observes. 'I bet they'd look good on me.'",
+                            "shipHealthChange": 0,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "specialEffect": "gogglesFound",
+                            "nextId": "smuggler_riddle"
+                        }
+                    },
+                    {
+                        "text": "Inspect the runed spanner.",
+                        "outcome": {
+                            "image": "outcome/smuggler_riddle_spanner.png",
+                            "text": "The runed spanner hums with latent energy, ready to repair any machine. <br><br>'This must be the fourth relic,' Jax concludes. 'I think I'll stick with the one I've got.'",
+                            "shipHealthChange": 0,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "specialEffect": "spannerFound",
+                            "nextId": "smuggler_riddle"
+                        }
+                    },                    
+                    {
+                        "text": "Walk away, leaving the relics untouched.",
+                        "outcome": {
+                            "image": "outcome/smuggler_riddle_walk_away.png",
+                            "text": "You decide the relics are too risky to take. The smuggler's riddle remains unsolved, but you leave with your ship intact. 'Maybe next time, Captain,' Jax shrugs.",
+                            "shipHealthChange": 0,
+                            "treasureChange": 0,
+                            "crewHealthChange": 0,
+                            "nextId": "act1_enc3"
+                        }
+                    },
+                    {
+                        "text": "You place the relics in the order you believe is correct: Goggles, Crystal Core, Star Compass, Spanner.",
+                        "outcome": {
+                            "image": "outcome/smuggler_riddle_incorrect_order.png",
+                            "text": "The items rest in silence, but nothing happens. 'That doesn't feel right,' Aris says. 'We need to think this through.'",
+                            "shipHealthChange": 0,
+                            "treasureChange": 0,
+                            "crewHealthChange": -10,
+                            "nextId": "smuggler_riddle"
+                        },
+                        "condition": {
+                            "type": "allSpecialEffects",
+                            "flags": ["crystalCoreFound", "starCompassFound", "gogglesFound", "spannerFound"],
+                            "comparison": "set"
+                        }
+                    },                             
+                    {
+                        "text": "You place the relics in the order you believe is correct: Star Compass, Spanner, Crystal Core, Goggles.",
+                        "outcome": {
+                            "image": "outcome/smuggler_riddle_correct_order.png",
+                            "text": "The relics resonate in harmony, and a hidden compartment opens, revealing a trove of ancient data and a rare artifact. 'Well done, Captain!' Aris exclaims. 'This data could could tell us where the STAR-HEART GEM is.'<br><br>The smuggler nods approvingly. 'You have a keen mind, Captain. This data will serve you well in the Wastes.'",
+                            "shipHealthChange": 0,
+                            "treasureChange": 500,
+                            "crewHealthChange": 50,
+                            "specialEffect": "smugglerRiddleSolved",
+                            "nextId": "act1_enc_smugglers_den"
+                        },
+                        "condition": {
+                            "type": "allSpecialEffects",
+                            "flags": ["crystalCoreFound", "starCompassFound", "gogglesFound", "spannerFound"],
+                            "comparison": "set"
+                        }
+                    },             
+                    {
+                        "text": "You place the relics in the order you believe is correct: Crystal Core, Star Compass, Goggles, Spanner.",
+                        "outcome": {
+                            "image": "outcome/smuggler_riddle_incorrect_order.png",
+                            "text": "The relics rest without reaction. The stranger shakes his head. 'Not quite right, Captain. Think again.'",
+                            "shipHealthChange": 0,
+                            "treasureChange": 0,
+                            "crewHealthChange": -10,
+                            "nextId": "smuggler_riddle"
+                        },
+                        "condition": {
+                            "type": "allSpecialEffects",
+                            "flags": ["crystalCoreFound", "starCompassFound", "gogglesFound", "spannerFound"],
+                            "comparison": "set"
+                        }
+                    }  
                 ]
             },
             {
@@ -583,7 +716,7 @@
                         "text": "Attempt a high-speed ambush to raid their cargo.",
                         "outcome": {
                             "image": "outcome/act2_enc_merchant_convoy_outcome2.png",
-                            "text": "Your ambush is swift. You secure valuable cargo, but distress signals alert authorities, marking you as a pirate. 'Worth every credit,' Jax laughs, but Aris looks grim. Your pirate reputation precedes you.",
+                            "text": "Your ambush is swift. You secure valuable cargo, but distress signals alert authorities, marking you as a pirate. 'Worth every credit,' Jax laughs, but Aris looks grim. Your pirate reputation precedes you. Your ship is damaged, and the crew is shaken. You must now face the Rival Faction's patrol.",
                             "shipHealthChange": -25,
                             "treasureChange": 600,
                             "crewHealthChange": -15,
