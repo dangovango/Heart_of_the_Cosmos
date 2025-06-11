@@ -156,6 +156,11 @@
                             "crewHealthChange": 0,
                             "specialEffect": "clue_glyph_59_found",
                             "nextId": "act1_puzzle_enigmatic_glyphs"
+                        },
+                        "condition": {
+                            "type": "specialEffect",
+                            "flag": "clue_order_freq_volt_found",
+                            "comparison": "set"
                         }
                     },
                     {
@@ -168,6 +173,11 @@
                             "crewHealthChange": 0,
                             "specialEffect": "clue_voltage_13_1_found",
                             "nextId": "act1_puzzle_enigmatic_glyphs"
+                        },
+                        "condition": {
+                            "type": "specialEffect",
+                            "flag": "clue_order_freq_volt_found",
+                            "comparison": "set"
                         }
                     },                    
                     {
@@ -753,11 +763,6 @@
                             "crewHealthChange": 5,
                             "specialEffect": "reputationGain",
                             "nextId": "act2_enc_hostile_patrol_check"
-                        },
-                        "condition": {
-                            "type": "specialEffect",
-                            "flag": "reputationLossMinor",
-                            "comparison": "not_set"
                         }
                     },
                     {
@@ -804,11 +809,6 @@
                             "crewHealthChange": -5,
                             "specialEffect": "rivalFactionEncountered",
                             "nextId": "act2_enc_hostile_patrol_check"
-                        },
-                        "condition": {
-                            "type": "specialEffect",
-                            "flag": "reputationLossMinor",
-                            "comparison": "not_set"
                         }
                     }
                 ]
